@@ -8,21 +8,20 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              http://example.com
+ * @link              https://github.com/meshuggie/bronto-email-signup
  * @since             1.0.0
  * @package           Bronto_Email_Signup
  *
  * @wordpress-plugin
- * Plugin Name:       WordPress Plugin Boilerplate
- * Plugin URI:        http://example.com/bronto-email-signup-uri/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Plugin Name:       Bronto Email Signup
+ * Plugin URI:        https://github.com/meshuggie/bronto-email-signup/bronto-email-signup-uri/
+ * Description:       Sets up a shortcode for a Bronto email signup. Allows you to add emails to 1 or more Bronto Lists.
  * Version:           1.0.0
- * Author:            Your Name or Your Company
- * Author URI:        http://example.com/
+ * Author:            Joshua Harris
+ * Author URI:        https://github.com/meshuggie/bronto-email-signup/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       bronto-email-signup
- * Domain Path:       /languages
  */
 
 // If this file is called directly, abort.
