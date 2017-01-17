@@ -22,7 +22,7 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    Plugin_Name
+ * @package    Bronto_Email_Signup
  */
 
 // If uninstall not called from WordPress, then exit.
