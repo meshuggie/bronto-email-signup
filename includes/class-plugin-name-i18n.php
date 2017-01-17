@@ -6,7 +6,7 @@
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @link       http://example.com
+ * @link       https://github.com/meshuggie/bronto-email-signup
  * @since      1.0.0
  *
  * @package    Bronto_Email_Signup
@@ -22,7 +22,7 @@
  * @since      1.0.0
  * @package    Bronto_Email_Signup
  * @subpackage Bronto_Email_Signup/includes
- * @author     Your Name <email@example.com>
+ * @author     Joshua Harris
  */
 class Bronto_Email_Signup_i18n {
 

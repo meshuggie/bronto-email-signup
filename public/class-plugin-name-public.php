@@ -3,7 +3,7 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       http://example.com
+ * @link       https://github.com/meshuggie/bronto-email-signup
  * @since      1.0.0
  *
  * @package    Bronto_Email_Signup
@@ -18,7 +18,7 @@
  *
  * @package    Bronto_Email_Signup
  * @subpackage Bronto_Email_Signup/public
- * @author     Your Name <email@example.com>
+ * @author     Joshua Harris
  */
 class Bronto_Email_Signup_Public {
 
