@@ -55,6 +55,21 @@ class Bronto_Email_Signup_Admin {
 	}
 
 	/**
+	 * Register the Menu for the admin area.
+	 *
+	 * @since    1.0.0
+	 */
+	public function bronto_email_signup_menu() {
+
+		/**
+		 * Adds the plugin to the admin settings menu.
+		 *
+		 */
+		 add_options_page( 'Bronto Email Signup', 'Bronto Email Signup', 'manage_options', 'bronto-email-signup-options', array( $this, 'bronto_email_signup_page' ) );
+
+	}
+
+	/**
 	 * Register the stylesheets for the admin area.
 	 *
 	 * @since    1.0.0
@@ -100,4 +115,15 @@ class Bronto_Email_Signup_Admin {
 
 	}
 
+	/**
+	 * Sets up the admin page.
+	 *
+	 * @since    1.0.0
+	 */
+	public function bronto_email_signup_page()
+	{
+
+		include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/bronto-email-signup-admin-display.php';
+
+	}
 }
