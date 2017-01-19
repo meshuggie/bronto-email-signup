@@ -96,6 +96,7 @@ class Bronto_Email_Signup_Public {
 		 * class.
 		 */
 
+		wp_enqueue_script( 'jquery-validate', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->bronto_email_signup, plugin_dir_url( __FILE__ ) . 'js/bronto-email-signup-public.js', array( 'jquery' ), $this->version, false );
 
 	}

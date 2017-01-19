@@ -14,9 +14,9 @@ class Bronto_Email_Signup_Activator {
 
 	public static function activate() {
 		add_option('broes_api_key');
-		add_option('broes_list_id');
+		add_option('broes_list_ids');
 		register_setting('broes_settings', 'broes_api_key');
-		register_setting( 'broes_settings', 'broes_list_id' );
+		register_setting( 'broes_settings', 'broes_list_ids' );
 	}
 
 }
