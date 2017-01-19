@@ -65,7 +65,13 @@ class Bronto_Email_Signup_Admin {
 		 * Adds the plugin to the admin settings menu.
 		 *
 		 */
-		 add_options_page( 'Bronto Email Signup', 'Bronto Email Signup', 'manage_options', 'bronto-email-signup-options', array( $this, 'bronto_email_signup_page' ) );
+		 add_options_page(
+			 'Bronto Email Signup',
+			 'Bronto Email Signup',
+			 'manage_options',
+			 'bronto-email-signup-options',
+			 array( $this, 'bronto_email_signup_page' )
+		 );
 
 	}
 
@@ -111,7 +117,14 @@ class Bronto_Email_Signup_Admin {
 		 * class.
 		 */
 
+		$broes_nonce = wp_create_nonce( 'broes_nonce' );
+		$data = array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce' => $broes_nonce
+		);
+		wp_enqueue_script( 'jquery-validate', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->bronto_email_signup, plugin_dir_url( __FILE__ ) . 'js/bronto-email-signup-admin.js', array( 'jquery' ), $this->version, false );
+		wp_localize_script( $this->bronto_email_signup, 'broes', $data );
 
 	}
 
@@ -120,10 +133,39 @@ class Bronto_Email_Signup_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function bronto_email_signup_page()
-	{
+	public function bronto_email_signup_page() {
 
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/bronto-email-signup-admin-display.php';
 
 	}
+
+	public function update_settings() {
+
+		check_ajax_referer( 'broes_nonce' );
+		update_option( 'broes_api_key', $_POST['api_key'] );
+		update_option( 'broes_list_ids', $_POST['list_ids'] );
+		$result = array(
+			'result' => 'success',
+			'message' => 'Bronto settings successfully updated.'
+		);
+		echo json_encode( $result );
+		wp_die();
+
+	}
+
+	public function add_contact() {
+
+		check_ajax_referer( 'broes_nonce' );
+		$connection_data = array(
+			'list_ids' => $_POST['list_ids'],
+			'api_key' => $_POST['api_key'],
+			'email' => $_POST['email']
+		);
+		$signup = new Bronto_Email_Signup_Api( $connection_data );
+
+		echo $signup->add_contact();
+		wp_die();
+
+	}
+
 }

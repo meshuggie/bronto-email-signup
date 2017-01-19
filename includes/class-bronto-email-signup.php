@@ -119,6 +119,8 @@ class Bronto_Email_Signup {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-bronto-email-signup-public.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-bronto-email-signup-api.php';
+
 		$this->loader = new Bronto_Email_Signup_Loader();
 
 	}
@@ -154,6 +156,8 @@ class Bronto_Email_Signup {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'bronto_email_signup_menu' );
+		$this->loader->add_action( 'wp_ajax_broes_add_contact', $plugin_admin, 'add_contact' );
+		$this->loader->add_action( 'wp_ajax_broes_update_settings', $plugin_admin, 'update_settings' );
 
 	}
 
