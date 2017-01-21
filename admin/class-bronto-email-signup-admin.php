@@ -65,12 +65,13 @@ class Bronto_Email_Signup_Admin {
 		 * Adds the plugin to the admin settings menu.
 		 *
 		 */
-		 add_options_page(
+		 add_menu_page(
 			 'Bronto Email Signup',
-			 'Bronto Email Signup',
+			 'Bronto Email',
 			 'manage_options',
 			 'bronto-email-signup-options',
-			 array( $this, 'bronto_email_signup_page' )
+			 array( $this, 'bronto_email_signup_page' ),
+			 'dashicons-email-alt'
 		 );
 
 	}
@@ -144,6 +145,7 @@ class Bronto_Email_Signup_Admin {
 		check_ajax_referer( 'broes_nonce' );
 		update_option( 'broes_api_key', $_POST['api_key'] );
 		update_option( 'broes_list_ids', $_POST['list_ids'] );
+		update_option( 'broes_fields', $_POST['fields'] );
 		$result = array(
 			'result' => 'success',
 			'message' => 'Bronto settings successfully updated.'
