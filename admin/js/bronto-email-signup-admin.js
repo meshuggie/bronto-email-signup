@@ -26,11 +26,13 @@
 				api_key = container.find('#broes_api_key').val(),
 				list_ids = container.find('#broes_list_ids').val(),
 				email = container.find('#broes_test_email').val(),
+				fields = container.find('#broes_fields').val(),
 				data = {
 					action: action,
 					_ajax_nonce: broes.nonce,
 					'api_key': api_key,
 					'list_ids': list_ids,
+					'fields': fields,
 					'email': email
 				};
 
@@ -51,11 +53,14 @@
 						html += '<p>' + response.message + '</p>';
 						html += '</div>';
 					}
+					dismissNotice();
 					container.prepend(html);
 					if (action == 'broes_update_settings') {
+						if ($('#bronto-email-signup-form .hidden').length)
+							window.location.reload(true);
 						$('body').animate({
 							scrollTop: 0
-						}, 350, 'swing');
+						}, 350, 'linear');
 					}
 				},
 				'json'
@@ -63,8 +68,11 @@
 		});
 
 		$('body').on('click', '.notice-dismiss', function() {
-			$(this).parents('.notice').remove();
+			dismissNotice();
 		});
 	});
 
+	function dismissNotice() {
+		$('.notice').remove();
+	}
 })( jQuery );
