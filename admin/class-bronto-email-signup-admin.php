@@ -22,6 +22,13 @@
  */
 class Bronto_Email_Signup_Admin {
 
+	private $broes_api_key,
+		$broes_list_ids,
+		$broes_fields,
+		$api_initiated,
+		$lists,
+		$fields;
+
 	/**
 	 * The ID of this plugin.
 	 *
@@ -51,6 +58,16 @@ class Bronto_Email_Signup_Admin {
 
 		$this->bronto_email_signup = $bronto_email_signup;
 		$this->version = $version;
+		$this->broes_api_key = get_option( 'broes_api_key' );
+		$this->broes_list_ids = get_option( 'broes_list_ids' );
+		$this->broes_fields = get_option( 'broes_fields' );
+
+		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $this->broes_api_key ) );
+		$this->api_initiated = $api->connection;
+		if ( $this->api_initiated ) {
+			$this->lists = $api->get_lists();
+			$this->fields = $api->get_fields();
+		}
 
 	}
 

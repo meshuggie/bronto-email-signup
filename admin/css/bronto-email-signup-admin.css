@@ -2,6 +2,9 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+ #toplevel_page_bronto-email-signup-options div.wp-menu-image:before {
+   color: #07AA0F;
+ }
  .error {
    display: block;
    color: red;
