@@ -1,0 +1,26 @@
+{
+  "name": "bronto-email-signup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meshuggie/bronto-email-signup.git"
+  },
+  "author": "Joshua Harris",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/meshuggie/bronto-email-signup/issues"
+  },
+  "homepage": "https://github.com/meshuggie/bronto-email-signup#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.1.0",
+    "merge-stream": "^1.0.1",
+    "path": "^0.12.7",
+    "run-sequence": "^1.2.2"
+  }
+}
