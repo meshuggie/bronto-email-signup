@@ -13,4 +13,13 @@
  */
 ?>
 
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
+<h2>my bronto stuff</h2>
+<form>
+  <label for="email">Email</label>
+  <input type="email" name="email">
+  <?php
+  foreach($this->input_fields as $field) {
+    echo $field;
+  }
+  ?>
+</form>
