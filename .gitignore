@@ -19,8 +19,6 @@ Thumbs.db
 .tmproj
 *.esproj
 nbproject
-*.sublime-project
-*.sublime-workspace
 
 # Folders to ignore
 .hg
@@ -29,3 +27,4 @@ nbproject
 intermediate
 .idea
 cache
+node_modules

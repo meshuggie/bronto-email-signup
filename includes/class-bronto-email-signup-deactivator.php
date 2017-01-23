@@ -19,6 +19,7 @@ class Bronto_Email_Signup_Deactivator {
 		unregister_setting('broes_settings', 'broes_api_key');
 		unregister_setting( 'broes_settings', 'broes_list_ids' );
 		unregister_setting( 'broes_settings', 'broes_fields' );
+		remove_shortcode( 'broes_signup_form' );
 	}
 
 }
