@@ -36,7 +36,6 @@
 					broes.ajax_url,
 					data,
 					function(response) {
-						console.log(broes);
 						var html;
 						if ( response.result == 'success' ) {
 							html = '<p class="success">' + broes.success_message + '</p>';
