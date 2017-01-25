@@ -13,13 +13,20 @@
  */
 ?>
 
-<h2>my bronto stuff</h2>
-<form>
-  <label for="email">Email</label>
-  <input type="email" name="email">
+<form id="<?php echo $this->prefix; ?>email-signup" class="bronto-email-signup" action="<?php echo admin_url( 'admin.php?page=bronto-email-signup-options' ); ?>">
+  <div role="group" class="form-group">
+    <?php if ($this->broes_contact == 'phone') : ?>
+    <label for="phone">Phone Number<span class="required">*</span></label>
+    <input type="tel" name="mobileNumber" aria-required="true">
+    <?php else : ?>
+    <label for="email">Email<span class="required">*</span></label>
+    <input type="email" name="email" aria-required="true">
+    <?php endif; ?>
+  </div>
   <?php
   foreach($this->input_fields as $field) {
     echo $field;
   }
   ?>
+  <button type="submit">Submit</button>
 </form>

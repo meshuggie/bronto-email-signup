@@ -36,8 +36,9 @@ class Bronto_Email_Signup_Api {
     try {
 
       $contacts = array(
-        'email' => $this->connection_data['email'],
-        'listIds' => $this->connection_data['list_ids']
+        'email' => htmlentities($this->connection_data['email']),
+        'listIds' => $this->connection_data['list_ids'],
+        'fields' => $this->connection_data['fields']
       );
 
       $write_result = $this->client->addContacts(array($contacts))->return;

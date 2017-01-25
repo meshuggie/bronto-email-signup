@@ -24,7 +24,11 @@ class Bronto_Email_Signup_Public {
 
 	private $broes_fields,
 		$all_fields,
-		$input_fields;
+		$input_objects,
+		$input_fields,
+		$broes_contact,
+		$expected_inputs,
+		$prefix;
 
 	/**
 	 * The ID of this plugin.
@@ -57,11 +61,13 @@ class Bronto_Email_Signup_Public {
 		$this->version = $version;
 		$broes_api_key = get_option( 'broes_api_key' );
 		$this->broes_fields = get_option( 'broes_fields' );
+		$this->broes_contact = get_option( 'broes_contact' );
 
 		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $broes_api_key ) );
 		if ( $api->connection ) {
 			$this->all_fields = $api->get_fields();
-			$this->input_fields = $this->get_input_fields();
+			$this->input_objects = $this->get_input_objects();
+			$this->expected_inputs = $this->get_expected_inputs();
 		}
 
 	}
@@ -71,6 +77,8 @@ class Bronto_Email_Signup_Public {
 	}
 
 	public function bronto_email_signup_shortcode( $atts = [], $content = null ) {
+		$this->prefix = (isset($atts['prefix-id'])) ? $atts['prefix-id'] . '-' : 'broes-';
+		$this->input_fields = $this->get_input_fields();
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/bronto-email-signup-public-display.php';
 	}
 
@@ -116,21 +124,31 @@ class Bronto_Email_Signup_Public {
 		 * class.
 		 */
 
+ 		$data = array(
+ 			'ajax_url' => admin_url( 'admin-ajax.php' ),
+ 			'nonce' => wp_create_nonce( 'broes_nonce' ),
+			'expected_inputs' => $this->expected_inputs
+ 		);
 		wp_enqueue_script( 'jquery-validate', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->bronto_email_signup, plugin_dir_url( __FILE__ ) . 'js/bronto-email-signup-public.js', array( 'jquery' ), $this->version, false );
+		wp_localize_script( $this->bronto_email_signup, 'broes', $data );
 
 	}
 
-	private function get_input_fields() {
+	private function get_input_objects() {
 		$input_fields = array();
-		$input_html = array();
 		foreach ($this->broes_fields as $value) {
 		  $filtered = array_filter($this->all_fields, function($el) use ($value) {
 		    return $el->id == $value;
 		  });
 		  $input_fields[] = $filtered;
 		}
-		foreach($input_fields as $field) {
+		return $input_fields;
+	}
+
+	private function get_input_fields() {
+		$input_html = array();
+		foreach($this->input_objects as $field) {
 		  $field = array_values($field);
 		  $input_html[] = $this->input_html($field[0]);
 		}
@@ -140,38 +158,76 @@ class Bronto_Email_Signup_Public {
 	private function input_html($field) {
 	  switch($field->type) {
 	    case 'select' :
-	      $html = '<label for="bronto-' . $field->name . '">' . $field->name . '</label>';
-	      $html .= '<select id="bronto-' . $field->name . '" name="' . $field->name . '">';
+				$html = '<div role="group" class="form-group">';
+	      $html .= '<label for="' . $this->prefix . $field->name . '">' . $field->name . '</label>';
+	      $html .= '<select id="' . $this->prefix . $field->name . '" name="' . $field->id . '">';
 	      foreach($field->options as $option) {
 	        $selected = ($option->isDefault) ? ' selected="selected"' : '';
 	        $html .= '<option label="' . $option->label . '" value="' . $option->value . '"' . $selected . '>' . $option->label . '</option>';
 	      }
 	      $html .= '</select>';
+				$html .= '</div>';
 	      return $html;
 	    case 'checkbox' :
-	      $html = '<label for="bronto-' . $field->name . '">' . $field->name . '</label>';
-	      $html .= '<div id="bronto-' . $field->name . '" role="group">';
-	      foreach($field->options as $option) {
-	        $selected = ($option->isDefault) ? ' selected="selected"' : '';
-	        $html .= '<input type="' . $field->type . '" id="bronto-' . $option->label . '" name="' . $field->name . '[]" value="' . $option->value . '"' . $selected . '>';
-	        $html .= '<label for="bronto-' . $option->label . '">' . $option->label . '</label>';
-	      }
+				$html = '<div role="checkbox" aria-labelledby="' . $this->prefix . $field->name . '" class="form-group">';
+				if (isset($field->options)) {
+					$html .= '<label id="' . $this->prefix . $field->name . '">' . $field->name . '</label>';
+		      $html .= '<div id="' . $this->prefix . $field->name . '" role="group">';
+					foreach($field->options as $option) {
+		        $selected = ($option->isDefault) ? ' selected="selected"' : '';
+		        $html .= '<input type="' . $field->type . '" id="' . $this->prefix . $option->label . '" name="' . $field->id . '[]" value="' . $option->value . '"' . $selected . '>';
+		        $html .= '<label for="' . $this->prefix . $option->label . '">' . $option->label . '</label>';
+		      }
+				} else {
+					$html .= '<input type="' . $field->type . '" id="' . $field->id . '" name="' . $field->id . '">';
+					$html .= '<label for="' . $field->id . '">' . $field->name . '</label>';
+				}
 	      $html .= '</div>';
 	      return $html;
 	    case 'radio' :
-	      $html = '<label id="bronto-' . $field->name . '">' . $field->name . '</label>';
-	      $html .= '<div role="radiogroup" aria-labelledby="bronto-' . $field->name . '">';
-	      foreach($field->options as $option) {
-	        $selected = ($option->isDefault) ? ' selected="selected"' : '';
-	        $html .= '<input type="' . $field->type . '" id="bronto-' . $option->label . '" name="' . $field->name . '" value="' . $option->value . '"' . $selected . '>';
-	        $html .= '<label for="bronto-' . $option->label . '">' . $option->label . '</label>';
-	      }
+				$html = '<div role="radiogroup" aria-labelledby="' . $this->prefix . $field->name . '" class="form-group">';
+	      $html .= '<label id="' . $this->prefix . $field->name . '">' . $field->name . '</label>';
+				if (isset($field->options)) {
+					foreach($field->options as $option) {
+						$html .= '<div role="radio">';
+		        $selected = ($option->isDefault) ? ' selected="selected"' : '';
+		        $html .= '<input type="' . $field->type . '" id="' . $this->prefix . $option->label . '" name="' . $field->id . '" value="' . $option->value . '"' . $selected . '>';
+		        $html .= '<label for="' . $this->prefix . $option->label . '">' . $option->label . '</label>';
+						$html .= '</div>';
+		      }
+				}
 	      $html .= '</div>';
 	      return $html;
 	    case 'textarea' :
-	      return '<label for="' . $field->id . '">' . $field->name . '</label><textarea id="' . $field->id . '" name="' . $field->id . '"></textarea>';
-	    default :
-	      return '<label for="' . $field->id . '">' . $field->name . '</label><input type="' . $field->type . '" id="' . $field->id . '" name="' . $field->id . '">';
+				$html = '<div role="group">';
+	      $html .= '<label for="' . $field->id . '">' . $field->name . '</label><textarea id="' . $field->id . '" name="' . $field->id . '"></textarea>';
+				$html .= '</div>';
+				return $html;
+	    default : {
+				switch ($field->type) {
+					case 'currency' :
+					case 'integer' :
+					case 'float' :
+						$type = 'number';
+					default :
+						$type = 'text';
+				}
+				$html = '<div role="group" class="form-group">';
+	      $html .= '<label for="' . $field->id . '">' . $field->name . '</label><input type="' . $type . '" id="' . $field->id . '" name="' . $field->id . '">';
+				$html .= '</div>';
+				return $html;
+			}
 	  }
 	}
+
+	private function get_expected_inputs() {
+		$inputs = array();
+		foreach($this->input_objects as $field) {
+		  $field = array_values($field);
+		  $inputs[] = $field[0]->id;
+		}
+		$inputs[] = $this->broes_contact;
+		return $inputs;
+	}
+
 }
