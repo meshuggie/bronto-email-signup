@@ -14,7 +14,7 @@
 
 ?>
 
-<div class="wrap">
+<div class="wrap bronto-email-signup">
 	<?php
 	screen_icon(); ?>
 	<h2>Bronto Email Signup</h2>
@@ -51,19 +51,6 @@
           </div>
         </td>
 			</tr>
-			<tr valign="top" class="contact<?php echo ( !$this->api_initiated ) ? ' hidden' : ''; ?>">
-				<th scope="row"><label for="broes_contact">Contact Type</label></th>
-				<td>
-					<fieldset>
-						<legend class="screen-reader-text"><span>Contact Type</span></legend>
-						<label><input type="radio" name="broes_contact" value="email"<?php echo ($this->broes_contact == 'email' || $this->broes_contact == '') ? ' checked="checked"' : ''; ?>> <span>Email</span></label><br>
-						<label><input type="radio" name="broes_contact" value="phone"<?php echo ($this->broes_contact == 'phone') ? ' checked="checked"' : ''; ?>> <span>Phone</span></label><br>
-					</fieldset>
-					<p class="description">
-						In Bronto, you are required to register a new contact via either their email or phone number. You must pick one.
-					</p>
-				</td>
-			</tr>
 			<tr valign="top" class="list_ids<?php echo ( !$this->api_initiated ) ? ' hidden' : ''; ?>">
 				<th scope="row"><label for="broes_list_ids">List ID's</label></th>
 				<td>
@@ -79,16 +66,45 @@
 			</tr>
 			<tr valign="top" class="fields<?php echo ( !$this->api_initiated ) ? ' hidden' : ''; ?>">
 				<th scope="row"><label for="broes_fields">Fields</label></th>
-				<td>
+				<td class="sortable">
 					<p id="api-list-id" class="description">
-            This select box contains all of your fields. You may select one or more fields.
+            This select box contains all of your fields. You may select one or more fields, and sort the fields by dragging them.
           </p>
-					<select multiple="multiple" name="broes_fields[]" id="broes_fields" class="widefat" size="9" aria-describedby="api-list-id">
+					<ul>
 						<?php foreach($this->fields as $field) : ?>
-							<option value="<?php echo $field->id; ?>"<?php echo ( !empty( $this->broes_fields ) && in_array( $field->id, $this->broes_fields ) ) ? ' selected="selected"' : ''; ?>><?php echo $field->label; ?></option>
+							<?php if ( !empty( $this->broes_fields ) && in_array( $field->id, $this->broes_fields ) ) : ?>
+							<li data-name="<?php echo $field->label; ?>" data-value="<?php echo $field->id; ?>">
+								<input type="hidden" name="broes_fields[]" value="<?php echo $field->id; ?>">
+								<span><?php echo $field->label; ?></span>
+								<span class="remove dashicons dashicons-no-alt"></span>
+							</li>
+							<?php endif; ?>
 						<?php endforeach; ?>
-					</select>
+					</ul>
+					<div class="sortable-form">
+						<select id="broes_fields" aria-describedby="api-list-id">
+							<?php foreach($this->fields as $field) : ?>
+								<?php if ( empty( $this->broes_fields ) || !in_array( $field->id, $this->broes_fields ) ) : ?>
+								<option data-name="<?php echo $field->label; ?>" value="<?php echo $field->id; ?>"><?php echo $field->label; ?></option>
+								<?php endif; ?>
+							<?php endforeach; ?>
+						</select>
+						<button class="row-add-button">Add</button>
+					</div>
         </td>
+			</tr>
+			<tr valign="top" class="contact<?php echo ( !$this->api_initiated ) ? ' hidden' : ''; ?>">
+				<th scope="row"><label for="broes_contact">Contact Type</label></th>
+				<td>
+					<fieldset>
+						<legend class="screen-reader-text"><span>Contact Type</span></legend>
+						<label><input type="radio" name="broes_contact" value="email"<?php echo ($this->broes_contact == 'email' || $this->broes_contact == '') ? ' checked="checked"' : ''; ?>> <span>Email</span></label><br>
+						<label><input type="radio" name="broes_contact" value="phone"<?php echo ($this->broes_contact == 'phone') ? ' checked="checked"' : ''; ?>> <span>Phone</span></label><br>
+					</fieldset>
+					<p class="description">
+						In Bronto, you are required to register a new contact via either their email or phone number. You must pick one.
+					</p>
+				</td>
 			</tr>
 			<tr valign="top"<?php echo ( !$this->api_initiated ) ? ' class="hidden"' : ''; ?>>
 				<th scope="row"><label for="broes_success_message">Signup Thank You</label></th>

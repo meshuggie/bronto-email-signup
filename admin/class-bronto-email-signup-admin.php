@@ -147,6 +147,7 @@ class Bronto_Email_Signup_Admin {
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce' => $broes_nonce
 		);
+		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( 'jquery-validate', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->bronto_email_signup, plugin_dir_url( __FILE__ ) . 'js/bronto-email-signup-admin.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script( $this->bronto_email_signup, 'broes', $data );

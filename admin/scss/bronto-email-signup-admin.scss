@@ -21,6 +21,32 @@ $wp-blue: #00b9eb;
     }
   }
 }
+.bronto-email-signup {
+  li {
+    display: flex;
+    background: #fff;
+    padding: 0.3125em 0.625em 0.3125em 0.9375em;
+    &:before {
+      font: normal 20px/1 dashicons;
+      content: "\f156";
+      cursor: pointer;
+      margin-right: 0.3125em;
+    }
+    .remove {
+      margin-left: auto;
+    }
+  }
+  .row-form {
+    display: flex;
+    list-style: none;
+    background: #fff;
+    padding: 0.3125em 0.625em;
+  }
+  .dashicons-no-alt {
+    color: red;
+    cursor: pointer;
+  }
+}
 .error {
   display: block;
   color: red;

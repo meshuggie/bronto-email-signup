@@ -3,12 +3,31 @@
 
 	$(window).on('load', function() {
 
+		var sortableList = $('.sortable ul');
+		var sortableSelect = $('.sortable select');
+		sortableList.sortable();
+		$('.sortable-form button').on('click', function(e) {
+			e.preventDefault();
+			var selected = $(this).parents('.sortable-form').find('option:selected');
+			var val = selected.val();
+			var name = selected.data('name');
+			selected.prop('disabled', true).prop('selected', false);
+			sortableList.append(newListItem(val, name));
+		});
+		$('body').on('click', '.sortable .remove', function() {
+			var selected = $(this).parents('li');
+			var val = selected.data('value');
+			var name = selected.data('name');
+			selected.remove();
+			sortableSelect.find('option[value="' + val + '"]').prop('disabled', false);
+		});
+
 		var validator = $('#bronto-email-signup-form').validate({
 			rules: {
 				broes_api_key: 'required'
 			}
 		});
-		$('#bronto-email-signup-form .button').click(function(e) {
+		$('body').on('click', '#bronto-email-signup-form .button', function(e) {
 			e.preventDefault();
 			var action;
 			if ($(this).attr('name') == 'test-connection') {
@@ -22,14 +41,14 @@
 				action = 'broes_update_settings';
 			}
 
-			var container = $('#bronto-email-signup-form'),
+			var container = $(this).parents('#bronto-email-signup-form'),
 				data = {
 					action: action,
 					_ajax_nonce: broes.nonce,
 					'api_key': container.find('#broes_api_key').val(),
 					'contact': container.find('input[name=broes_contact]:checked').val(),
 					'list_ids': container.find('#broes_list_ids').val(),
-					'fields': container.find('#broes_fields').val(),
+					'fields': container.find('input[name="broes_fields[]"]').map(function(){return $(this).val();}).get(),
 					'email': container.find('#broes_test_email').val(),
 					'success_message': container.find('#broes_success_message').val()
 				};
@@ -72,5 +91,14 @@
 
 	function dismissNotice() {
 		$('.notice').remove();
+	}
+
+	function newListItem(val, name) {
+		var html = '<li data-name="' + name + '" data-value="' + val + '">';
+		html += '<input type="hidden" name="broes_fields[]" value="' + val + '">';
+		html += '<span>' + name + '</span>';
+		html += '<span class="remove dashicons dashicons-no-alt"></span>';
+		html += '</li>';
+		return html;
 	}
 })( jQuery );

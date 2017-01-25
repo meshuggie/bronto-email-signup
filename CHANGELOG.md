@@ -1,5 +1,8 @@
 # Change Log
 
+## [0.1.1](https://github.com/meshuggie/bronto-email-signup/tree/0.1.1) (2017-01-25)
+[Full Changelog](https://github.com/meshuggie/bronto-email-signup/compare/0.1.0...0.1.1)
+
 ## [0.1.0](https://github.com/meshuggie/bronto-email-signup/tree/0.1.0) (2017-01-17)
 
 
