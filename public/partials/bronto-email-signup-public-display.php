@@ -29,4 +29,5 @@
   }
   ?>
   <button type="submit">Submit</button>
+  <div class="response"></div>
 </form>

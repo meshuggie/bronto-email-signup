@@ -38,7 +38,7 @@
 				<th scope="row"><label for="broes_api_key">API Key</label></th>
 				<td>
           <input type="text" id="broes_api_key" name="broes_api_key" class="regular-text" aria-describedby="api-key" value="<?php echo esc_attr($this->broes_api_key); ?>" placeholder="Enter SOAP API Access Token." />
-					<?php if (!$this->api_initiated) : ?>
+					<?php if (!$this->api_initiated && !empty($this->broes_api_key)) : ?>
 					<label id="broes_api_key-error" class="error" for="broes_api_key">Your API key is incorrect.</label>
 					<?php endif; ?>
           <div id="api-key">
@@ -88,6 +88,15 @@
 							<option value="<?php echo $field->id; ?>"<?php echo ( !empty( $this->broes_fields ) && in_array( $field->id, $this->broes_fields ) ) ? ' selected="selected"' : ''; ?>><?php echo $field->label; ?></option>
 						<?php endforeach; ?>
 					</select>
+        </td>
+			</tr>
+			<tr valign="top"<?php echo ( !$this->api_initiated ) ? ' class="hidden"' : ''; ?>>
+				<th scope="row"><label for="broes_success_message">Signup Thank You</label></th>
+				<td>
+          <input type="text" id="broes_success_message" name="broes_success_message" class="regular-text" value="<?php echo esc_attr($this->broes_success_message); ?>" placeholder="Enter Thank You Message" />
+          <p class="description">
+            Enter a success message to show the user after signup.
+          </p>
         </td>
 			</tr>
 		</table>

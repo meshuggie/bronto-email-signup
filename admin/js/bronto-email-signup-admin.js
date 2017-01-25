@@ -23,19 +23,15 @@
 			}
 
 			var container = $('#bronto-email-signup-form'),
-				api_key = container.find('#broes_api_key').val(),
-				contact = container.find('input[name=broes_contact]:checked').val(),
-				list_ids = container.find('#broes_list_ids').val(),
-				email = container.find('#broes_test_email').val(),
-				fields = container.find('#broes_fields').val(),
 				data = {
 					action: action,
 					_ajax_nonce: broes.nonce,
-					'api_key': api_key,
-					'contact': contact,
-					'list_ids': list_ids,
-					'fields': fields,
-					'email': email
+					'api_key': container.find('#broes_api_key').val(),
+					'contact': container.find('input[name=broes_contact]:checked').val(),
+					'list_ids': container.find('#broes_list_ids').val(),
+					'fields': container.find('#broes_fields').val(),
+					'email': container.find('#broes_test_email').val(),
+					'success_message': container.find('#broes_success_message').val()
 				};
 
 			if (!validator.form()) return false;

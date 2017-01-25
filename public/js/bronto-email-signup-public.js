@@ -4,7 +4,6 @@
 	$(window).on('load', function() {
 
 		$('.bronto-email-signup').each(function() {
-			var container = $(this);
 			var validator = $(this).validate();
 			var mobileNumber = $(this).find('input[name="mobileNumber"]');
 			var email = $(this).find('input[name="email"]');
@@ -24,6 +23,7 @@
 				e.preventDefault();
 				if (!validator.form()) return false;
 
+				var container = $(this);
 				var data = $(this).serializeArray().reduce(function(obj, item) {
 			    obj[item.name] = item.value;
 			    return obj;
@@ -36,14 +36,14 @@
 					broes.ajax_url,
 					data,
 					function(response) {
+						console.log(broes);
 						var html;
-						var container = $('.wrap');
 						if ( response.result == 'success' ) {
-							html = '<p>' + response.message + '</p>';
+							html = '<p class="success">' + broes.success_message + '</p>';
 						} else {
 							html = '<p class="error">' + response.message + '</p>';
 						}
-						container.append(html);
+						container.find('.response').html(html);
 					},
 					'json'
 				);
