@@ -1,32 +1,53 @@
 (function( $ ) {
 	'use strict';
 
-	/**
-	 * All of the code for your public-facing JavaScript source
-	 * should reside in this file.
-	 *
-	 * Note: It has been assumed you will write jQuery code here, so the
-	 * $ function reference has been prepared for usage within the scope
-	 * of this function.
-	 *
-	 * This enables you to define handlers, for when the DOM is ready:
-	 *
-	 * $(function() {
-	 *
-	 * });
-	 *
-	 * When the window is loaded:
-	 *
-	 * $( window ).load(function() {
-	 *
-	 * });
-	 *
-	 * ...and/or other possibilities.
-	 *
-	 * Ideally, it is not considered best practise to attach more than a
-	 * single DOM-ready or window-load handler for a particular page.
-	 * Although scripts in the WordPress core, Plugins and Themes may be
-	 * practising this, we should strive to set a better example in our own work.
-	 */
+	$(window).on('load', function() {
 
+		$('.bronto-email-signup').each(function() {
+			var container = $(this);
+			var validator = $(this).validate();
+			var mobileNumber = $(this).find('input[name="mobileNumber"]');
+			var email = $(this).find('input[name="email"]');
+			if (mobileNumber.length) {
+				mobileNumber.rules('add', {
+					required: true,
+					number: true
+				});
+			} else {
+				email.rules('add', {
+					required: true,
+					email: true
+				});
+			}
+
+			$(this).on('submit', function(e) {
+				e.preventDefault();
+				if (!validator.form()) return false;
+
+				var data = $(this).serializeArray().reduce(function(obj, item) {
+			    obj[item.name] = item.value;
+			    return obj;
+				}, {});
+				data.action = 'broes_add_contact';
+				data._ajax_nonce = broes.nonce;
+				data.expected_inputs = broes.expected_inputs;
+
+				$.post(
+					broes.ajax_url,
+					data,
+					function(response) {
+						var html;
+						var container = $('.wrap');
+						if ( response.result == 'success' ) {
+							html = '<p>' + response.message + '</p>';
+						} else {
+							html = '<p class="error">' + response.message + '</p>';
+						}
+						container.append(html);
+					},
+					'json'
+				);
+			});
+		});
+	});
 })( jQuery );

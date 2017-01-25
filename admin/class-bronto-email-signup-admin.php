@@ -23,6 +23,7 @@
 class Bronto_Email_Signup_Admin {
 
 	private $broes_api_key,
+		$broes_contact,
 		$broes_list_ids,
 		$broes_fields,
 		$api_initiated,
@@ -59,6 +60,7 @@ class Bronto_Email_Signup_Admin {
 		$this->bronto_email_signup = $bronto_email_signup;
 		$this->version = $version;
 		$this->broes_api_key = get_option( 'broes_api_key' );
+		$this->broes_contact = get_option( 'broes_contact' );
 		$this->broes_list_ids = get_option( 'broes_list_ids' );
 		$this->broes_fields = get_option( 'broes_fields' );
 
@@ -91,6 +93,10 @@ class Bronto_Email_Signup_Admin {
 			 'dashicons-email-alt'
 		 );
 
+	}
+
+	public function widget() {
+		register_widget( 'Broes_Widget' );
 	}
 
 	/**
@@ -161,6 +167,7 @@ class Bronto_Email_Signup_Admin {
 
 		check_ajax_referer( 'broes_nonce' );
 		update_option( 'broes_api_key', $_POST['api_key'] );
+		update_option( 'broes_contact', $_POST['contact'] );
 		update_option( 'broes_list_ids', $_POST['list_ids'] );
 		update_option( 'broes_fields', $_POST['fields'] );
 		$result = array(
@@ -175,16 +182,39 @@ class Bronto_Email_Signup_Admin {
 	public function add_contact() {
 
 		check_ajax_referer( 'broes_nonce' );
-		$connection_data = array(
-			'list_ids' => $_POST['list_ids'],
-			'api_key' => $_POST['api_key'],
-			'email' => $_POST['email']
-		);
+		// Check if we are testing connection in backend.
+		if (isset($_POST['api_key'])) {
+			$connection_data = array(
+				'list_ids' => $_POST['list_ids'],
+				'api_key' => $_POST['api_key'],
+				'email' => $_POST['email']
+			);
+		} else {
+			$connection_data = $this->get_expected_inputs($_POST);
+			$connection_data['api_key'] = $this->broes_api_key;
+			$connection_data['list_ids'] = $this->broes_list_ids;
+		}
 		$signup = new Bronto_Email_Signup_Api( $connection_data );
 
 		echo $signup->add_contact();
 		wp_die();
 
+	}
+
+	private function get_expected_inputs($data) {
+		$fields = array();
+		foreach($data['expected_inputs'] as $key => $input) {
+			$fields[$input] = array(
+				'fieldId' => $input,
+				'content' => $data[$input]
+			);
+		}
+		unset($fields[$this->broes_contact]);
+		$fields = array_values($fields);
+		return array(
+			'fields' => $fields,
+			$this->broes_contact => $data[$this->broes_contact]
+		);
 	}
 
 }

@@ -22,7 +22,14 @@
 		<?php settings_fields('broes_settings'); ?>
     <?php do_settings_sections( 'broes_settings' ); ?>
 		<?php if ($this->api_initiated) : ?>
-		<h4>Select your integration options below. Then use the shortcode in a page or widget.</h4>
+		<h4>Select and save your integration options below.</h4>
+		<p>
+			Once you've saved your options, you may embed the form into a post or page by using the shortcode.<br>
+			<code>[broes_signup_form prefix-id="your-custom-id"]</code>
+		</p>
+		<p>
+			You can also use the <b>Bronto Email Signup</b> widget, available on the <a href="<?php echo admin_url( 'widgets.php' ); ?>">Widgets page</a>, which allows you to add a sidebar widget with optional text above and below the form.
+		</p>
 		<?php else : ?>
 		<h4>Before gaining access to the other settings, you must enter you API Key.</h4>
 		<?php endif; ?>
@@ -30,7 +37,7 @@
 			<tr valign="top">
 				<th scope="row"><label for="broes_api_key">API Key</label></th>
 				<td>
-          <input type="text" id="broes_api_key" name="broes_api_key" class="regular-text" aria-describedby="api-key" value="<?php echo $this->broes_api_key; ?>" placeholder="Enter SOAP API Access Token." />
+          <input type="text" id="broes_api_key" name="broes_api_key" class="regular-text" aria-describedby="api-key" value="<?php echo esc_attr($this->broes_api_key); ?>" placeholder="Enter SOAP API Access Token." />
 					<?php if (!$this->api_initiated) : ?>
 					<label id="broes_api_key-error" class="error" for="broes_api_key">Your API key is incorrect.</label>
 					<?php endif; ?>
@@ -43,6 +50,19 @@
             </p>
           </div>
         </td>
+			</tr>
+			<tr valign="top" class="contact<?php echo ( !$this->api_initiated ) ? ' hidden' : ''; ?>">
+				<th scope="row"><label for="broes_contact">Contact Type</label></th>
+				<td>
+					<fieldset>
+						<legend class="screen-reader-text"><span>Contact Type</span></legend>
+						<label><input type="radio" name="broes_contact" value="email"<?php echo ($this->broes_contact == 'email' || $this->broes_contact == '') ? ' checked="checked"' : ''; ?>> <span>Email</span></label><br>
+						<label><input type="radio" name="broes_contact" value="phone"<?php echo ($this->broes_contact == 'phone') ? ' checked="checked"' : ''; ?>> <span>Phone</span></label><br>
+					</fieldset>
+					<p class="description">
+						In Bronto, you are required to register a new contact via either their email or phone number. You must pick one.
+					</p>
+				</td>
 			</tr>
 			<tr valign="top" class="list_ids<?php echo ( !$this->api_initiated ) ? ' hidden' : ''; ?>">
 				<th scope="row"><label for="broes_list_ids">List ID's</label></th>
