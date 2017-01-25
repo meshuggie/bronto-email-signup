@@ -19,6 +19,15 @@
       }
     }
   }
+  button[type="submit"] {
+    margin: 0 0 0.625em 0;
+  }
+  .success {
+    font-weight: bold;
+  }
+  .error {
+    color: red;
+  }
   .required {
     margin-left: 0.325em;
   }

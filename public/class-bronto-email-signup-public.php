@@ -27,6 +27,7 @@ class Bronto_Email_Signup_Public {
 		$input_objects,
 		$input_fields,
 		$broes_contact,
+		$broes_success_message,
 		$expected_inputs,
 		$prefix;
 
@@ -62,6 +63,7 @@ class Bronto_Email_Signup_Public {
 		$broes_api_key = get_option( 'broes_api_key' );
 		$this->broes_fields = get_option( 'broes_fields' );
 		$this->broes_contact = get_option( 'broes_contact' );
+		$this->broes_success_message = get_option( 'broes_success_message' );
 
 		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $broes_api_key ) );
 		if ( $api->connection ) {
@@ -127,7 +129,8 @@ class Bronto_Email_Signup_Public {
  		$data = array(
  			'ajax_url' => admin_url( 'admin-ajax.php' ),
  			'nonce' => wp_create_nonce( 'broes_nonce' ),
-			'expected_inputs' => $this->expected_inputs
+			'expected_inputs' => $this->expected_inputs,
+			'success_message' => $this->broes_success_message
  		);
 		wp_enqueue_script( 'jquery-validate', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->bronto_email_signup, plugin_dir_url( __FILE__ ) . 'js/bronto-email-signup-public.js', array( 'jquery' ), $this->version, false );
@@ -137,6 +140,7 @@ class Bronto_Email_Signup_Public {
 
 	private function get_input_objects() {
 		$input_fields = array();
+		if (!is_array($this->broes_fields)) return $input_fields;
 		foreach ($this->broes_fields as $value) {
 		  $filtered = array_filter($this->all_fields, function($el) use ($value) {
 		    return $el->id == $value;
@@ -148,6 +152,7 @@ class Bronto_Email_Signup_Public {
 
 	private function get_input_fields() {
 		$input_html = array();
+		if (!is_array($this->input_objects)) return $input_html;
 		foreach($this->input_objects as $field) {
 		  $field = array_values($field);
 		  $input_html[] = $this->input_html($field[0]);
