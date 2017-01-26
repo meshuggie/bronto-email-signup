@@ -48,9 +48,11 @@
 					function(response) {
 						var html;
 						if ( response.result == 'success' ) {
-							html = '<p class="success">' + broes.success_message + '</p>';
+							var message = (broes.success_message !== '') ? broes.success_message : response.message;
+							html = '<p class="success">' + message + '</p>';
 						} else {
-							html = '<p class="error">' + response.message + '</p>';
+							var message = (broes.registered_message !== '') ? broes.registered_message : response.message;
+							html = '<p class="error">' + message + '</p>';
 						}
 						container.find('.response').html(html);
 					},

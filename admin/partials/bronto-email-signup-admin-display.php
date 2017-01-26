@@ -124,9 +124,18 @@
 			<tr valign="top"<?php echo ( !$this->api_initiated ) ? ' class="hidden"' : ''; ?>>
 				<th scope="row"><label for="broes_success_message">Signup Thank You</label></th>
 				<td>
-          <input type="text" id="broes_success_message" name="broes_success_message" class="regular-text" value="<?php echo esc_attr($this->broes_success_message); ?>" placeholder="Enter Thank You Message" />
+					<textarea id="broes_success_message" class="large-text code" name="broes_success_message"><?php echo esc_textarea( $this->broes_success_message ); ?></textarea>
           <p class="description">
             Enter a success message to show the user after signup.
+          </p>
+        </td>
+			</tr>
+			<tr valign="top"<?php echo ( !$this->api_initiated ) ? ' class="hidden"' : ''; ?>>
+				<th scope="row"><label for="broes_registered_message">Already Registered Message</label></th>
+				<td>
+					<textarea id="broes_registered_message" class="large-text code" name="broes_registered_message"><?php echo esc_textarea( $this->broes_registered_message ); ?></textarea>
+          <p class="description">
+            Enter an "Already Registered" message to show the user when attempting to reregister.
           </p>
         </td>
 			</tr>

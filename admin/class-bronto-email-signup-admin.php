@@ -26,7 +26,10 @@ class Bronto_Email_Signup_Admin {
 		$broes_contact,
 		$broes_list_ids,
 		$broes_fields,
+		$broes_required_fields,
 		$broes_cta,
+		$broes_success_message,
+		$broes_registered_message,
 		$api_initiated,
 		$lists,
 		$fields;
@@ -67,6 +70,7 @@ class Bronto_Email_Signup_Admin {
 		$this->broes_required_fields = get_option( 'broes_required_fields' );
 		$this->broes_cta = get_option( 'broes_cta' );
 		$this->broes_success_message = get_option( 'broes_success_message' );
+		$this->broes_registered_message = get_option( 'broes_registered_message' );
 
 		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $this->broes_api_key ) );
 		$this->api_initiated = $api->connection;
@@ -178,6 +182,7 @@ class Bronto_Email_Signup_Admin {
 		update_option( 'broes_required_fields', $_POST['required_fields'] );
 		update_option( 'broes_cta', $_POST['cta'] );
 		update_option( 'broes_success_message', $_POST['success_message'] );
+		update_option( 'broes_registered_message', wp_kses_post($_POST['registered_message']) );
 		$result = array(
 			'result' => 'success',
 			'message' => 'Bronto settings successfully updated.'

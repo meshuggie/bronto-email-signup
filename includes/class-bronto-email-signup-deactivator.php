@@ -20,6 +20,7 @@ class Bronto_Email_Signup_Deactivator {
 		delete_option( 'broes_required_fields' );
 		delete_option( 'broes_cta' );
 		delete_option( 'broes_success_message' );
+		delete_option( 'broes_registered_message' );
 		unregister_setting( 'broes_settings', 'broes_api_key' );
 		unregister_setting( 'broes_settings', 'broes_contact' );
 		unregister_setting( 'broes_settings', 'broes_list_ids' );
@@ -27,6 +28,7 @@ class Bronto_Email_Signup_Deactivator {
 		unregister_setting( 'broes_settings', 'broes_required_fields' );
 		unregister_setting( 'broes_settings', 'broes_cta' );
 		unregister_setting( 'broes_settings', 'broes_success_message' );
+		unregister_setting( 'broes_settings', 'broes_registered_message' );
 		remove_shortcode( 'broes_signup_form' );
 	}
 
