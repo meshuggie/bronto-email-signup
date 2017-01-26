@@ -30,6 +30,7 @@ class Bronto_Email_Signup_Public {
 		$broes_contact,
 		$broes_cta,
 		$broes_success_message,
+		$broes_registered_message,
 		$expected_inputs,
 		$prefix;
 
@@ -67,6 +68,7 @@ class Bronto_Email_Signup_Public {
 		$this->broes_required_fields = get_option( 'broes_required_fields' );
 		$this->broes_contact = get_option( 'broes_contact' );
 		$this->broes_success_message = get_option( 'broes_success_message' );
+		$this->broes_registered_message = get_option( 'broes_registered_message' );
 		$this->broes_cta = ( get_option( 'broes_cta' ) !== '' ) ? get_option( 'broes_cta' ) : 'Submit';
 
 		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $broes_api_key ) );
@@ -134,7 +136,8 @@ class Bronto_Email_Signup_Public {
  			'ajax_url' => admin_url( 'admin-ajax.php' ),
  			'nonce' => wp_create_nonce( 'broes_nonce' ),
 			'expected_inputs' => $this->expected_inputs,
-			'success_message' => $this->broes_success_message
+			'success_message' => $this->broes_success_message,
+			'registered_message' => $this->broes_registered_message
  		);
 		wp_enqueue_script( 'jquery-validate', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->bronto_email_signup, plugin_dir_url( __FILE__ ) . 'js/bronto-email-signup-public.js', array( 'jquery' ), $this->version, false );

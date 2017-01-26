@@ -52,7 +52,8 @@
 					'required_fields': container.find('input[name="broes_required_fields[]"]:checked').map(function(){return $(this).val();}).get(),
 					'email': container.find('#broes_test_email').val(),
 					'cta': container.find('#broes_cta').val(),
-					'success_message': container.find('#broes_success_message').val()
+					'success_message': container.find('#broes_success_message').val(),
+					'registered_message': container.find('#broes_registered_message').val()
 				};
 
 			if (!validator.form()) return false;
