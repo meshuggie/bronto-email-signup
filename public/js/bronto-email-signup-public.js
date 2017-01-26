@@ -46,7 +46,16 @@
 					broes.ajax_url,
 					data,
 					function(response) {
+						var result = response.result;
 						var html;
+						var brontoSignup = new CustomEvent("brontoSignup", {
+							detail: {
+								response: result
+							},
+					    bubbles: true,
+					    cancelable: true
+						});
+						container[0].dispatchEvent(brontoSignup);
 						if ( response.result == 'success' ) {
 							var message = (broes.success_message !== '') ? broes.success_message : response.message;
 							html = '<p class="success">' + message + '</p>';
