@@ -23,10 +23,12 @@
 class Bronto_Email_Signup_Public {
 
 	private $broes_fields,
+		$broes_required_fields,
 		$all_fields,
 		$input_objects,
 		$input_fields,
 		$broes_contact,
+		$broes_cta,
 		$broes_success_message,
 		$expected_inputs,
 		$prefix;
@@ -62,8 +64,10 @@ class Bronto_Email_Signup_Public {
 		$this->version = $version;
 		$broes_api_key = get_option( 'broes_api_key' );
 		$this->broes_fields = get_option( 'broes_fields' );
+		$this->broes_required_fields = get_option( 'broes_required_fields' );
 		$this->broes_contact = get_option( 'broes_contact' );
 		$this->broes_success_message = get_option( 'broes_success_message' );
+		$this->broes_cta = get_option( 'broes_cta' );
 
 		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $broes_api_key ) );
 		if ( $api->connection ) {
@@ -161,13 +165,18 @@ class Bronto_Email_Signup_Public {
 	}
 
 	private function input_html($field) {
+		$required_label = ( !empty( $this->broes_required_fields ) && in_array( $field->id, $this->broes_required_fields ) ) ? '<span class="required">*</span>' : '';
+		$required_input = ( !empty( $this->broes_required_fields ) && in_array( $field->id, $this->broes_required_fields ) ) ? ' aria-required="true"' : '';
 	  switch($field->type) {
 	    case 'select' :
 				$html = '<div role="group" class="form-group">';
-	      $html .= '<label for="' . $this->prefix . $field->name . '">' . $field->name . '</label>';
-	      $html .= '<select id="' . $this->prefix . $field->name . '" name="' . $field->id . '">';
+	      $html .= '<label for="' . $this->prefix . $field->name . '">';
+				$html .= $field->name;
+				$html .= $required_label;
+				$html .= '</label>';
+	      $html .= '<select id="' . $this->prefix . $field->name . '" name="' . $field->id . '"' . $required_input . '>';
 	      foreach($field->options as $option) {
-	        $selected = ($option->isDefault) ? ' selected="selected"' : '';
+	        $selected = ($option->isDefault) ? ' selected disabled hidden' : '';
 	        $html .= '<option label="' . $option->label . '" value="' . $option->value . '"' . $selected . '>' . $option->label . '</option>';
 	      }
 	      $html .= '</select>';
@@ -176,11 +185,14 @@ class Bronto_Email_Signup_Public {
 	    case 'checkbox' :
 				$html = '<div role="checkbox" aria-labelledby="' . $this->prefix . $field->name . '" class="form-group">';
 				if (isset($field->options)) {
-					$html .= '<label id="' . $this->prefix . $field->name . '">' . $field->name . '</label>';
+					$html .= '<label id="' . $this->prefix . $field->name . '">';
+					$html .= $field->name;
+					$html .= $required_label;
+					$html .= '</label>';
 		      $html .= '<div id="' . $this->prefix . $field->name . '" role="group">';
 					foreach($field->options as $option) {
 		        $selected = ($option->isDefault) ? ' selected="selected"' : '';
-		        $html .= '<input type="' . $field->type . '" id="' . $this->prefix . $option->label . '" name="' . $field->id . '[]" value="' . $option->value . '"' . $selected . '>';
+		        $html .= '<input type="' . $field->type . '" id="' . $this->prefix . $option->label . '" name="' . $field->id . '[]" value="' . $option->value . '"' . $selected . $required_input . '>';
 		        $html .= '<label for="' . $this->prefix . $option->label . '">' . $option->label . '</label>';
 		      }
 				} else {
@@ -191,12 +203,15 @@ class Bronto_Email_Signup_Public {
 	      return $html;
 	    case 'radio' :
 				$html = '<div role="radiogroup" aria-labelledby="' . $this->prefix . $field->name . '" class="form-group">';
-	      $html .= '<label id="' . $this->prefix . $field->name . '">' . $field->name . '</label>';
+	      $html .= '<label id="' . $this->prefix . $field->name . '">';
+				$html .= $field->name;
+				$html .= $required_label;
+				$html .= '</label>';
 				if (isset($field->options)) {
 					foreach($field->options as $option) {
 						$html .= '<div role="radio">';
 		        $selected = ($option->isDefault) ? ' selected="selected"' : '';
-		        $html .= '<input type="' . $field->type . '" id="' . $this->prefix . $option->label . '" name="' . $field->id . '" value="' . $option->value . '"' . $selected . '>';
+		        $html .= '<input type="' . $field->type . '" id="' . $this->prefix . $option->label . '" name="' . $field->id . '" value="' . $option->value . '"' . $selected . $required_input . '>';
 		        $html .= '<label for="' . $this->prefix . $option->label . '">' . $option->label . '</label>';
 						$html .= '</div>';
 		      }
@@ -205,7 +220,11 @@ class Bronto_Email_Signup_Public {
 	      return $html;
 	    case 'textarea' :
 				$html = '<div role="group">';
-	      $html .= '<label for="' . $field->id . '">' . $field->name . '</label><textarea id="' . $field->id . '" name="' . $field->id . '"></textarea>';
+	      $html .= '<label for="' . $field->id . '">';
+				$html .= $field->name;
+				$html .= $required_label;
+				$html .= '</label>';
+				$html .= '<textarea id="' . $field->id . '" name="' . $field->id . '"' . $required_input . '></textarea>';
 				$html .= '</div>';
 				return $html;
 	    default : {
@@ -218,7 +237,11 @@ class Bronto_Email_Signup_Public {
 						$type = 'text';
 				}
 				$html = '<div role="group" class="form-group">';
-	      $html .= '<label for="' . $field->id . '">' . $field->name . '</label><input type="' . $type . '" id="' . $field->id . '" name="' . $field->id . '">';
+	      $html .= '<label for="' . $field->id . '">';
+				$html .= $field->name;
+				$html .= $required_label;
+				$html .= '</label>';
+				$html .= '<input type="' . $type . '" id="' . $field->id . '" name="' . $field->id . '"' . $required_input . '>';
 				$html .= '</div>';
 				return $html;
 			}

@@ -66,17 +66,23 @@
 			</tr>
 			<tr valign="top" class="fields<?php echo ( !$this->api_initiated ) ? ' hidden' : ''; ?>">
 				<th scope="row"><label for="broes_fields">Fields</label></th>
-				<td class="sortable">
+				<td class="sortable broes-sortable">
 					<p id="api-list-id" class="description">
-            This select box contains all of your fields. You may select one or more fields, and sort the fields by dragging them.
+            The select box below contains all of your Bronto fields. You may add one or more fields to your form, and sort the fields by dragging them. You may also, optionally, mark each field as a required field.
           </p>
 					<ul>
 						<?php foreach($this->fields as $field) : ?>
 							<?php if ( !empty( $this->broes_fields ) && in_array( $field->id, $this->broes_fields ) ) : ?>
 							<li data-name="<?php echo $field->label; ?>" data-value="<?php echo $field->id; ?>">
-								<input type="hidden" name="broes_fields[]" value="<?php echo $field->id; ?>">
-								<span><?php echo $field->label; ?></span>
-								<span class="remove dashicons dashicons-no-alt"></span>
+								<div class="field sort">
+									<input type="hidden" name="broes_fields[]" value="<?php echo $field->id; ?>">
+									<span class="field-label"><?php echo $field->label; ?></span>
+									<span class="remove dashicons dashicons-no-alt"></span>
+								</div>
+								<div class="field">
+									<input type="checkbox" id="<?php echo $field->label; ?>-required" name="broes_required_fields[]" value="<?php echo $field->id; ?>"<?php echo ( !empty( $this->broes_required_fields ) && in_array( $field->id, $this->broes_required_fields ) ) ? ' checked="checked"' : ''; ?>>
+									<label for="<?php echo $field->label; ?>-required">Required</label>
+								</div>
 							</li>
 							<?php endif; ?>
 						<?php endforeach; ?>
@@ -105,6 +111,15 @@
 						In Bronto, you are required to register a new contact via either their email or phone number. You must pick one.
 					</p>
 				</td>
+			</tr>
+			<tr valign="top"<?php echo ( !$this->api_initiated ) ? ' class="hidden"' : ''; ?>>
+				<th scope="row"><label for="broes_cta">Signup CTA</label></th>
+				<td>
+          <input type="text" id="broes_cta" name="broes_cta" class="regular-text" value="<?php echo esc_attr($this->broes_cta); ?>" placeholder="Enter CTA" />
+          <p class="description">
+            Enter a CTA for the form button.
+          </p>
+        </td>
 			</tr>
 			<tr valign="top"<?php echo ( !$this->api_initiated ) ? ' class="hidden"' : ''; ?>>
 				<th scope="row"><label for="broes_success_message">Signup Thank You</label></th>

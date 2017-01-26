@@ -17,6 +17,9 @@
         width: 100%;
         margin: 0 0 0.5em 0;
       }
+      &.error {
+        width: 100%;
+      }
     }
   }
   button[type="submit"] {
@@ -28,7 +31,7 @@
   .error {
     color: red;
   }
-  .required {
+  span.required {
     margin-left: 0.325em;
   }
 }

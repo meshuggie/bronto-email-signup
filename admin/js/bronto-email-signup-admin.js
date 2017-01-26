@@ -49,7 +49,9 @@
 					'contact': container.find('input[name=broes_contact]:checked').val(),
 					'list_ids': container.find('#broes_list_ids').val(),
 					'fields': container.find('input[name="broes_fields[]"]').map(function(){return $(this).val();}).get(),
+					'required_fields': container.find('input[name="broes_required_fields[]"]:checked').map(function(){return $(this).val();}).get(),
 					'email': container.find('#broes_test_email').val(),
+					'cta': container.find('#broes_cta').val(),
 					'success_message': container.find('#broes_success_message').val()
 				};
 
@@ -95,9 +97,15 @@
 
 	function newListItem(val, name) {
 		var html = '<li data-name="' + name + '" data-value="' + val + '">';
+		html += '<div class="field sort">';
 		html += '<input type="hidden" name="broes_fields[]" value="' + val + '">';
 		html += '<span>' + name + '</span>';
 		html += '<span class="remove dashicons dashicons-no-alt"></span>';
+		html += '</div>';
+		html += '<div class="field">';
+		html += '<input type="checkbox" id="' + name + '-required" name="broes_required_fields[]" value="' + val + '">';
+		html += '<label for="' + name + '-required">Required</label>';
+		html += '</div>';
 		html += '</li>';
 		return html;
 	}
