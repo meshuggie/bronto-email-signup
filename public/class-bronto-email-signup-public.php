@@ -67,7 +67,7 @@ class Bronto_Email_Signup_Public {
 		$this->broes_required_fields = get_option( 'broes_required_fields' );
 		$this->broes_contact = get_option( 'broes_contact' );
 		$this->broes_success_message = get_option( 'broes_success_message' );
-		$this->broes_cta = get_option( 'broes_cta' );
+		$this->broes_cta = ( get_option( 'broes_cta' ) !== '' ) ? get_option( 'broes_cta' ) : 'Submit';
 
 		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $broes_api_key ) );
 		if ( $api->connection ) {
