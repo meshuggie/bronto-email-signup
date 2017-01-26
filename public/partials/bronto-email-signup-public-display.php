@@ -28,6 +28,6 @@
     echo $field;
   }
   ?>
-  <button type="submit">Submit</button>
+  <button type="submit"><?php echo $this->broes_cta; ?></button>
   <div class="response"></div>
 </form>

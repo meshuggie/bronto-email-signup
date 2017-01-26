@@ -4,7 +4,11 @@
 	$(window).on('load', function() {
 
 		$('.bronto-email-signup').each(function() {
-			var validator = $(this).validate();
+			var validator = $(this).validate({
+				errorPlacement: function(error, element) {
+					error.appendTo(element.parents('.form-group'));
+				}
+			});
 			var mobileNumber = $(this).find('input[name="mobileNumber"]');
 			var email = $(this).find('input[name="email"]');
 			if (mobileNumber.length) {
@@ -18,6 +22,12 @@
 					email: true
 				});
 			}
+			var requiredElements = $(this).find('[aria-required="true"]:not(span)').map(function(){return $(this);}).get();
+			requiredElements.forEach(function(el) {
+				el.rules('add', {
+					required: true
+				});
+			});
 
 			$(this).on('submit', function(e) {
 				e.preventDefault();
