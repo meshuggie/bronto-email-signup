@@ -46,6 +46,8 @@
 					action: action,
 					_ajax_nonce: broes.nonce,
 					'api_key': container.find('#broes_api_key').val(),
+					'webform_url': container.find('#broes_webform_url').val(),
+					'webform_secret': container.find('#broes_webform_secret').val(),
 					'contact': container.find('input[name=broes_contact]:checked').val(),
 					'list_ids': container.find('#broes_list_ids').val(),
 					'fields': container.find('input[name="broes_fields[]"]').map(function(){return $(this).val();}).get(),

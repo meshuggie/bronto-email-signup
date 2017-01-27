@@ -33,6 +33,7 @@
 		<?php else : ?>
 		<h4>Before gaining access to the other settings, you must enter you API Key.</h4>
 		<?php endif; ?>
+		<hr />
 		<table class="form-table">
 			<tr valign="top">
 				<th scope="row"><label for="broes_api_key">API Key</label></th>
@@ -50,6 +51,12 @@
             </p>
           </div>
         </td>
+			</tr>
+			<tr valign="top" class="list_ids<?php echo ( !$this->api_initiated ) ? ' hidden' : ''; ?>">
+				<th scope="row" colspan="2">
+					<hr />
+					<h3>Signup Settings</h3>
+				</th>
 			</tr>
 			<tr valign="top" class="list_ids<?php echo ( !$this->api_initiated ) ? ' hidden' : ''; ?>">
 				<th scope="row"><label for="broes_list_ids">List ID's</label></th>
@@ -139,8 +146,34 @@
           </p>
         </td>
 			</tr>
+			<tr valign="top" class="list_ids<?php echo ( !$this->api_initiated ) ? ' hidden' : ''; ?>">
+				<th scope="row" colspan="2">
+					<hr />
+					<h3>Manage Preferences Webform <small>(optional)</small></h3>
+					<p class="description">
+						Fill in the fields here to generate a link to a Manage Preferences Webform. This link will be shown to users that are already signed up. See <a href="https://helpdocs.bronto.com/bmp/#task/t_bmp_content_webform_manage_pref_add_your_site.html" target="_blank">this article</a> for more information.
+					</p>
+				</th>
+			</tr>
+			<tr valign="top"<?php echo ( !$this->api_initiated ) ? ' class="hidden"' : ''; ?>>
+				<th scope="row"><label for="broes_webform_url">Webform URL</label></th>
+				<td>
+          <input type="text" id="broes_webform_url" name="broes_webform_url" class="regular-text" value="<?php echo esc_attr($this->broes_webform_url); ?>" placeholder="Enter Webform URL" />
+					<p class="description">
+						Enter the Webform URL up to the "manpref/" part. Do not enter "{CONTACT}" or "{VALIDATION_HASH}". For example,
+						<code>http://app.brontostaging.com/public/webform/lookup/d41d8cd98f00b204e9800998ecf8427e/d41d8cd98f00b204e9800998ecf8427e/manpref/</code>
+					</p>
+        </td>
+			</tr>
+			<tr valign="top"<?php echo ( !$this->api_initiated ) ? ' class="hidden"' : ''; ?>>
+				<th scope="row"><label for="broes_webform_secret">Webform Shared Secret</label></th>
+				<td>
+          <input type="password" id="broes_webform_secret" name="broes_webform_secret" class="regular-text" value="<?php echo esc_attr($this->broes_webform_secret); ?>" placeholder="Enter Webform Secret" />
+        </td>
+			</tr>
 		</table>
 		<?php submit_button(); ?>
+		<hr />
 		<div id="test-connection-form"<?php echo ( !$this->api_initiated ) ? ' class="hidden"' : ''; ?>>
 			<h3>Test Connection</h3>
 			<p class="description">
