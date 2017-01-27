@@ -84,7 +84,7 @@ class Bronto_Email_Signup_Public {
 		add_shortcode('broes_signup_form', array( $this, 'bronto_email_signup_shortcode' ) );
 	}
 
-	public function bronto_email_signup_shortcode( $atts = [], $content = null ) {
+	public function bronto_email_signup_shortcode( $atts = array(), $content = null ) {
 		$this->prefix = (isset($atts['prefix-id'])) ? $atts['prefix-id'] . '-' : 'broes-';
 		$this->input_fields = $this->get_input_fields();
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/bronto-email-signup-public-display.php';
