@@ -14,6 +14,8 @@ class Bronto_Email_Signup_Deactivator {
 
 	public static function deactivate() {
 		delete_option( 'broes_api_key' );
+		delete_option( 'broes_webform_url' );
+		delete_option( 'broes_webform_secret' );
 		delete_option( 'broes_contact' );
 		delete_option( 'broes_list_ids' );
 		delete_option( 'broes_fields' );
@@ -22,6 +24,8 @@ class Bronto_Email_Signup_Deactivator {
 		delete_option( 'broes_success_message' );
 		delete_option( 'broes_registered_message' );
 		unregister_setting( 'broes_settings', 'broes_api_key' );
+		unregister_setting( 'broes_settings', 'broes_webform_url' );
+		unregister_setting( 'broes_settings', 'broes_webform_secret' );
 		unregister_setting( 'broes_settings', 'broes_contact' );
 		unregister_setting( 'broes_settings', 'broes_list_ids' );
 		unregister_setting( 'broes_settings', 'broes_fields' );

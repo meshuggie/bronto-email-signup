@@ -14,6 +14,8 @@ class Bronto_Email_Signup_Activator {
 
 	public static function activate() {
 		add_option( 'broes_api_key' );
+		add_option( 'broes_webform_url' );
+		add_option( 'broes_webform_secret' );
 		add_option( 'broes_contact' );
 		add_option( 'broes_list_ids' );
 		add_option( 'broes_fields' );
@@ -22,6 +24,8 @@ class Bronto_Email_Signup_Activator {
 		add_option( 'broes_success_message' );
 		add_option( 'broes_registered_message' );
 		register_setting( 'broes_settings', 'broes_api_key' );
+		register_setting( 'broes_settings', 'broes_webform_url' );
+		register_setting( 'broes_settings', 'broes_webform_secret' );
 		register_setting( 'broes_settings', 'broes_contact' );
 		register_setting( 'broes_settings', 'broes_list_ids' );
 		register_setting( 'broes_settings', 'broes_fields' );

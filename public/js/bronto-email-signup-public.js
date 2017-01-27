@@ -56,12 +56,17 @@
 					    cancelable: true
 						});
 						container[0].dispatchEvent(brontoSignup);
+						var webformUrl = ( response.webformUrl !== '' ) ? '<br><a href="' + response.webformUrl + '" target="_blank">Manage your Preferences</a>' : '';
+						console.log(response);
 						if ( response.result == 'success' ) {
 							var message = (broes.success_message !== '') ? broes.success_message : response.message;
 							html = '<p class="success">' + message + '</p>';
 						} else {
 							var message = (broes.registered_message !== '') ? broes.registered_message : response.message;
-							html = '<p class="error">' + message + '</p>';
+							html = '<p class="error">';
+							html += message;
+							html += webformUrl;
+							html += '</p>';
 						}
 						container.find('.response').html(html);
 					},

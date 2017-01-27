@@ -41,18 +41,23 @@ class Bronto_Email_Signup_Api {
         'fields' => $this->connection_data['fields']
       );
 
+      if ( !empty( $this->connection_data['webform_url'] ) )
+        $webform_url = $this->get_webform_url();
+
       $write_result = $this->client->addContacts(array($contacts))->return;
 
       if ($write_result->errors) {
         $result = array(
           'result' => 'error',
-          'message' => $write_result->results[0]->errorString
+          'message' => $write_result->results[0]->errorString,
+          'webformUrl' => $webform_url
         );
       } else {
         $message = ( count( $this->connection_data['list_ids'] ) > 1 ) ? 'Test contact successfully added to Bronto lists.' : 'Test contact successfully added to Bronto list.';
         $result = array(
           'result' => 'success',
-          'message' => $message
+          'message' => $message,
+          'webformUrl' => $webform_url
         );
       }
 
@@ -104,4 +109,16 @@ class Bronto_Email_Signup_Api {
     }
 
   }
+
+  private function get_webform_url() {
+    preg_match("/.*?lookup\/(.*?)\/(.*?)\/manpref\//", $this->connection_data['webform_url'], $output_array);
+    $webform_hash = hash_hmac('sha256',
+      $output_array[2] .
+      $output_array[1] .
+      $this->connection_data['email'],
+      $this->connection_data['webform_secret']
+    );
+    return $this->connection_data['webform_url'] . $this->connection_data['email'] . '/' .  $webform_hash;
+  }
+
 }
