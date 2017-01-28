@@ -21,12 +21,14 @@
         width: 100%;
       }
     }
-    &[role="radiogroup"] {
-      margin-left: 0.325em;
-    }
   }
   button[type="submit"] {
     margin: 0 0 0.625em 0;
+  }
+  [role="radio"] {
+    label {
+      margin-left: 0.325em;
+    }
   }
   .success {
     font-weight: bold;
