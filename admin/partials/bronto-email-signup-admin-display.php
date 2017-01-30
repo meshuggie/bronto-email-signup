@@ -18,7 +18,7 @@
 	<?php
 	screen_icon(); ?>
 	<h2>Bronto Email Signup</h2>
-	<img src="<?php echo plugins_url( 'bronto-email-signup/public/images/bronto-loading.svg' ); ?>" class="loading">
+	<img src="<?php echo plugins_url( 'bronto-email-signup/public/dist/images/bronto-loading.svg' ); ?>" class="loading">
 	<form method="post" id="bronto-email-signup-form" class="disabled" action="<?php echo admin_url( 'admin.php?page=bronto-email-signup-options' ); ?>">
 		<fieldset disabled>
 			<?php settings_fields('broes_settings'); ?>

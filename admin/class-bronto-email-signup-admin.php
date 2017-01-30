@@ -102,7 +102,7 @@ class Bronto_Email_Signup_Admin {
 			 'manage_options',
 			 'bronto-email-signup-options',
 			 array( $this, 'bronto_email_signup_page' ),
-			 plugins_url( 'images/bronto-logo.svg', __FILE__ )
+			 plugins_url( 'dist/images/bronto-logo.svg', __FILE__ )
 		 );
 
 	}
@@ -130,7 +130,7 @@ class Bronto_Email_Signup_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->bronto_email_signup, plugin_dir_url( __FILE__ ) . 'css/bronto-email-signup-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->bronto_email_signup, plugin_dir_url( __FILE__ ) . 'dist/css/bronto-email-signup-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -160,7 +160,7 @@ class Bronto_Email_Signup_Admin {
 		);
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( 'jquery-validate', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js', array( 'jquery' ), $this->version, false );
-		wp_enqueue_script( $this->bronto_email_signup, plugin_dir_url( __FILE__ ) . 'js/bronto-email-signup-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->bronto_email_signup, plugin_dir_url( __FILE__ ) . 'dist/js/bronto-email-signup.min.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script( $this->bronto_email_signup, 'broes', $data );
 
 	}
