@@ -16,7 +16,7 @@
 <form id="<?php echo $this->prefix; ?>email-signup" class="bronto-email-signup disabled" onsubmit="return false;">
   <noscript>You must have javascript enabled to use this feature.</noscript>
   <fieldset disabled>
-    <img src="<?php echo plugins_url( 'bronto-email-signup/public/images/bronto-loading.svg' ); ?>" class="loading">
+    <img src="<?php echo plugins_url( 'bronto-email-signup/public/dist/images/bronto-loading.svg' ); ?>" class="loading">
     <div role="group" class="form-group">
       <?php if ($this->broes_contact == 'phone') : ?>
       <label for="phone">Phone Number<span class="required">*</span></label>
