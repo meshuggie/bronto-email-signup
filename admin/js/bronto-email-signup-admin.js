@@ -3,9 +3,11 @@
 
 	$(window).on('load', function() {
 
+		var container = $('.bronto-email-signup');
 		var sortableList = $('.sortable ul');
 		var sortableSelect = $('.sortable select');
 		sortableList.sortable();
+		toggleForm(container, false);
 		$('.sortable-form button').on('click', function(e) {
 			e.preventDefault();
 			var selected = $(this).parents('.sortable-form').find('option:selected');
@@ -41,30 +43,32 @@
 				action = 'broes_update_settings';
 			}
 
-			var container = $(this).parents('#bronto-email-signup-form'),
+			var form = $(this).parents('#bronto-email-signup-form'),
 				data = {
 					action: action,
 					_ajax_nonce: broes.nonce,
-					'api_key': container.find('#broes_api_key').val(),
-					'webform_url': container.find('#broes_webform_url').val(),
-					'webform_secret': container.find('#broes_webform_secret').val(),
-					'contact': container.find('input[name=broes_contact]:checked').val(),
-					'list_ids': container.find('#broes_list_ids').val(),
-					'fields': container.find('input[name="broes_fields[]"]').map(function(){return $(this).val();}).get(),
-					'required_fields': container.find('input[name="broes_required_fields[]"]:checked').map(function(){return $(this).val();}).get(),
-					'email': container.find('#broes_test_email').val(),
-					'cta': container.find('#broes_cta').val(),
-					'success_message': container.find('#broes_success_message').val(),
-					'registered_message': container.find('#broes_registered_message').val()
+					'api_key': form.find('#broes_api_key').val(),
+					'webform_url': form.find('#broes_webform_url').val(),
+					'webform_secret': form.find('#broes_webform_secret').val(),
+					'contact': form.find('input[name=broes_contact]:checked').val(),
+					'list_ids': form.find('#broes_list_ids').val(),
+					'fields': form.find('input[name="broes_fields[]"]').map(function(){return $(this).val();}).get(),
+					'required_fields': form.find('input[name="broes_required_fields[]"]:checked').map(function(){return $(this).val();}).get(),
+					'email': form.find('#broes_test_email').val(),
+					'cta': form.find('#broes_cta').val(),
+					'success_message': form.find('#broes_success_message').val(),
+					'registered_message': form.find('#broes_registered_message').val()
 				};
 
 			if (!validator.form()) return false;
+			toggleForm(container, true);
 			$.post(
 				broes.ajax_url,
 				data,
 				function(response) {
 					var html;
-					var container = (action == 'broes_add_contact') ? $('#test-connection-form') : $('.wrap');
+					var form = (action == 'broes_add_contact') ? $('#test-connection-form') : $('.wrap');
+					toggleForm(container, false);
 					if ( response.result == 'success' ) {
 						html = '<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible">';
 						html += '<p>' + response.message + '</p>';
@@ -76,7 +80,7 @@
 						html += '</div>';
 					}
 					dismissNotice();
-					container.prepend(html);
+					form.prepend(html);
 					if (action == 'broes_update_settings') {
 						if ($('#bronto-email-signup-form .hidden').length)
 							window.location.reload(true);
@@ -111,5 +115,17 @@
 		html += '</div>';
 		html += '</li>';
 		return html;
+	}
+
+	function toggleForm(el, disabled) {
+		if (disabled) {
+			el.find('form').addClass('disabled');
+			el.find('fieldset').prop('disabled');
+			el.find('.loading').removeClass('hidden');
+		} else {
+			el.find('form').removeClass('disabled');
+			el.find('fieldset').removeAttr('disabled');
+			el.find('.loading').addClass('hidden');
+		}
 	}
 })( jQuery );

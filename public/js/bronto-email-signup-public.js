@@ -3,7 +3,7 @@
 
 	$(window).on('load', function() {
 		$('.bronto-email-signup').each(function() {
-			$(this).removeClass('disabled').find('fieldset').removeAttr('disabled');
+			toggleForm($(this), false);
 			var validator = $(this).validate({
 				errorPlacement: function(error, element) {
 					error.appendTo(element.parents('.form-group'));
@@ -34,6 +34,7 @@
 				if (!validator.form()) return false;
 
 				var container = $(this);
+				toggleForm(container, true);
 				var data = $(this).serializeArray().reduce(function(obj, item) {
 			    obj[item.name] = item.value;
 			    return obj;
@@ -59,6 +60,8 @@
 						});
 						container[0].dispatchEvent(brontoSignup);
 
+						toggleForm(container, false);
+
 						if ( response.result == 'error' ) {
 							var message = (broes.registered_message !== '') ? broes.registered_message : response.message;
 							html = '<p class="error">';
@@ -79,4 +82,16 @@
 			});
 		});
 	});
+
+	function toggleForm(el, disabled) {
+		if (disabled) {
+			el.addClass('disabled');
+			el.find('fieldset').prop('disabled');
+			el.find('.loading').removeClass('hidden');
+		} else {
+			el.removeClass('disabled');
+			el.find('fieldset').removeAttr('disabled');
+			el.find('.loading').addClass('hidden');
+		}
+	}
 })( jQuery );

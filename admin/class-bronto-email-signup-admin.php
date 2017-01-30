@@ -102,7 +102,7 @@ class Bronto_Email_Signup_Admin {
 			 'manage_options',
 			 'bronto-email-signup-options',
 			 array( $this, 'bronto_email_signup_page' ),
-			 'dashicons-email-alt'
+			 plugins_url( 'images/bronto-logo.svg', __FILE__ )
 		 );
 
 	}

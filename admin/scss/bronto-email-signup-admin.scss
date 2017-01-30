@@ -48,4 +48,19 @@ $wp-blue: #00b9eb;
     display: block;
     color: red;
   }
+  .disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 3rem;
+    height: auto;
+    &.hidden {
+      visibility: hidden;
+    }
+  }
 }
