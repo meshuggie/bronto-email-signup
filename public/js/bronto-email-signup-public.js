@@ -2,7 +2,6 @@
 	'use strict';
 
 	$(window).on('load', function() {
-
 		$('.bronto-email-signup').each(function() {
 			var validator = $(this).validate({
 				errorPlacement: function(error, element) {
@@ -46,8 +45,10 @@
 					broes.ajax_url,
 					data,
 					function(response) {
-						var result = response.result;
 						var html;
+						var result = response.result;
+						var webformUrl = ( response.webformUrl !== '' ) ? '<br><a href="' + response.webformUrl + '" target="_blank">Manage your Preferences</a>' : '';
+
 						var brontoSignup = new CustomEvent("brontoSignup", {
 							detail: {
 								response: result
@@ -56,16 +57,18 @@
 					    cancelable: true
 						});
 						container[0].dispatchEvent(brontoSignup);
-						var webformUrl = ( response.webformUrl !== '' ) ? '<br><a href="' + response.webformUrl + '" target="_blank">Manage your Preferences</a>' : '';
-						console.log(response);
-						if ( response.result == 'success' ) {
-							var message = (broes.success_message !== '') ? broes.success_message : response.message;
-							html = '<p class="success">' + message + '</p>';
-						} else {
+
+						if ( response.result == 'error' ) {
 							var message = (broes.registered_message !== '') ? broes.registered_message : response.message;
 							html = '<p class="error">';
 							html += message;
 							html += webformUrl;
+							html += '</p>';
+						} else {
+							var message = (broes.success_message !== '') ? broes.success_message : response.message;
+							html = '<p class="success">';
+							html += message;
+							html += ( response.result == 'updated' ) ? webformUrl : '';
 							html += '</p>';
 						}
 						container.find('.response').html(html);
