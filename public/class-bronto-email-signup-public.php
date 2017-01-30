@@ -147,7 +147,7 @@ class Bronto_Email_Signup_Public {
 
 	private function get_input_objects() {
 		$input_fields = array();
-		if (!is_array($this->broes_fields)) return $input_fields;
+		if ( !is_array( $this->broes_fields ) ) return $input_fields;
 		foreach ($this->broes_fields as $value) {
 		  $filtered = array_filter($this->all_fields, function($el) use ($value) {
 		    return $el->id == $value;
@@ -159,7 +159,9 @@ class Bronto_Email_Signup_Public {
 
 	private function get_input_fields() {
 		$input_html = array();
-		if (!is_array($this->input_objects)) return $input_html;
+		if ( !is_array( $this->input_objects ) ) {
+			return $input_html;
+		}
 		foreach($this->input_objects as $field) {
 		  $field = array_values($field);
 		  $input_html[] = $this->input_html($field[0]);
@@ -253,9 +255,11 @@ class Bronto_Email_Signup_Public {
 
 	private function get_expected_inputs() {
 		$inputs = array();
-		foreach($this->input_objects as $field) {
+		foreach ( $this->input_objects as $field ) {
 		  $field = array_values($field);
-		  $inputs[] = $field[0]->id;
+			if ( !empty( $field[0] ) ) {
+				$inputs[] = $field[0]->id;
+			}
 		}
 		$inputs[] = $this->broes_contact;
 		return $inputs;
