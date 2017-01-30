@@ -3,6 +3,7 @@
 
 	$(window).on('load', function() {
 		$('.bronto-email-signup').each(function() {
+			$(this).removeClass('disabled').find('fieldset').removeAttr('disabled');
 			var validator = $(this).validate({
 				errorPlacement: function(error, element) {
 					error.appendTo(element.parents('.form-group'));
