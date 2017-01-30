@@ -1,23 +1,9 @@
 $green: #07AA0F;
 $wp-blue: #00b9eb;
 #toplevel_page_bronto-email-signup-options {
-  &:hover,
-  &:focus {
-    .wp-menu-name,
-    div.dashicons-email-alt:before {
-      color: $wp-blue;
-    }
-  }
-  .wp-menu-name,
-  div.dashicons-email-alt:before {
-    color: $green;
-  }
-  &.current {
-    a.menu-top {
-      background-color: $green !important;
-    }
-    .wp-menu-name {
-      color: #fff;
+  .wp-menu-image {
+    img {
+      opacity: 1;
     }
   }
 }
