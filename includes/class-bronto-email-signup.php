@@ -69,7 +69,7 @@ class Bronto_Email_Signup {
 	public function __construct() {
 
 		$this->bronto_email_signup = 'bronto-email-signup';
-		$this->version = '0.1.1';
+		$this->version = '0.1.2';
 
 		$this->load_dependencies();
 		$this->set_locale();
