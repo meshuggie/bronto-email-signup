@@ -22,7 +22,8 @@
  */
 class Bronto_Email_Signup_Admin {
 
-	private $broes_api_key,
+	private $option_fields,
+		$broes_api_key,
 		$broes_webform_url,
 		$broes_webform_secret,
 		$broes_contact,
@@ -61,20 +62,14 @@ class Bronto_Email_Signup_Admin {
 	 * @param      string    $bronto_email_signup       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $bronto_email_signup, $version ) {
+	public function __construct( $bronto_email_signup, $version, $option_fields ) {
 
 		$this->bronto_email_signup = $bronto_email_signup;
+		$this->option_fields = $option_fields;
+		foreach ($this->option_fields as $key => $value) {
+			$this->$key = get_option( $key );
+		}
 		$this->version = $version;
-		$this->broes_api_key = get_option( 'broes_api_key' );
-		$this->broes_webform_url = get_option( 'broes_webform_url' );
-		$this->broes_webform_secret = get_option( 'broes_webform_secret' );
-		$this->broes_contact = get_option( 'broes_contact' );
-		$this->broes_list_ids = get_option( 'broes_list_ids' );
-		$this->broes_fields = get_option( 'broes_fields' );
-		$this->broes_required_fields = get_option( 'broes_required_fields' );
-		$this->broes_cta = get_option( 'broes_cta' );
-		$this->broes_success_message = get_option( 'broes_success_message' );
-		$this->broes_registered_message = get_option( 'broes_registered_message' );
 
 		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $this->broes_api_key ) );
 		$this->api_initiated = $api->connection;
@@ -179,16 +174,16 @@ class Bronto_Email_Signup_Admin {
 	public function update_settings() {
 
 		check_ajax_referer( 'broes_nonce' );
-		update_option( 'broes_api_key', $_POST['api_key'] );
-		update_option( 'broes_webform_url', $_POST['webform_url'] );
-		update_option( 'broes_webform_secret', $_POST['webform_secret'] );
-		update_option( 'broes_contact', $_POST['contact'] );
-		update_option( 'broes_list_ids', $_POST['list_ids'] );
-		update_option( 'broes_fields', $_POST['fields'] );
-		update_option( 'broes_required_fields', $_POST['required_fields'] );
-		update_option( 'broes_cta', $_POST['cta'] );
-		update_option( 'broes_success_message', $_POST['success_message'] );
-		update_option( 'broes_registered_message', wp_kses_post($_POST['registered_message']) );
+		update_option( 'broes_api_key', $_POST['broes_api_key'] );
+		update_option( 'broes_webform_url', $_POST['broes_webform_url'] );
+		update_option( 'broes_webform_secret', $_POST['broes_webform_secret'] );
+		update_option( 'broes_contact', $_POST['broes_contact'] );
+		update_option( 'broes_list_ids', $_POST['broes_list_ids'] );
+		update_option( 'broes_fields', $_POST['broes_fields'] );
+		update_option( 'broes_required_fields', $_POST['broes_required_fields'] );
+		update_option( 'broes_cta', $_POST['broes_cta'] );
+		update_option( 'broes_success_message', $_POST['broes_success_message'] );
+		update_option( 'broes_registered_message', wp_kses_post($_POST['broes_registered_message']) );
 		$result = array(
 			'result' => 'success',
 			'message' => 'Bronto settings successfully updated.'
@@ -202,11 +197,11 @@ class Bronto_Email_Signup_Admin {
 
 		check_ajax_referer( 'broes_nonce' );
 		// Check if we are testing connection in backend.
-		if (isset($_POST['api_key'])) {
+		if (isset($_POST['broes_api_key'])) {
 			$connection_data = array(
-				'list_ids' => $_POST['list_ids'],
-				'api_key' => $_POST['api_key'],
-				'email' => $_POST['email']
+				'list_ids' => $_POST['broes_list_ids'],
+				'api_key' => $_POST['broes_api_key'],
+				'email' => $_POST['broes_test_email']
 			);
 		} else {
 			$connection_data = $this->get_expected_inputs($_POST);

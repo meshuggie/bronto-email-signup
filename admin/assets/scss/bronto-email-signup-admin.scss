@@ -19,8 +19,14 @@ $wp-blue: #00b9eb;
     &:first-of-type {
       margin-right: 0.9375em;
     }
+    &.hidden {
+      display: none;
+    }
     .remove {
       margin-left: auto;
+    }
+    input[type="text"] {
+      margin-left: 0.3125em;
     }
   }
   .sort {

@@ -1,3 +1,5 @@
+var serialize = require('form-serialize');
+var count;
 (function( $ ) {
 	'use strict';
 
@@ -6,15 +8,19 @@
 		var container = $('.bronto-email-signup');
 		var sortableList = $('.sortable ul');
 		var sortableSelect = $('.sortable select');
-		sortableList.sortable();
+		count = $('.sortable li').length;
+		console.log(count);
+		sortableList.sortable({
+			stop: function(e, ui) {
+
+			}
+		});
 		toggleForm(container, false);
 		$('.sortable-form button').on('click', function(e) {
 			e.preventDefault();
 			var selected = $(this).parents('.sortable-form').find('option:selected');
-			var val = selected.val();
-			var name = selected.data('name');
 			selected.prop('disabled', true).prop('selected', false);
-			sortableList.append(newListItem(val, name));
+			sortableList.append(newListItem( selected.val(), selected.data() ));
 		});
 		$('body').on('click', '.sortable .remove', function() {
 			var selected = $(this).parents('li');
@@ -22,6 +28,9 @@
 			var name = selected.data('name');
 			selected.remove();
 			sortableSelect.find('option[value="' + val + '"]').prop('disabled', false);
+		});
+		$('body').on('click', '.field-hidden input', function() {
+			$(this).parents('.field-hidden').next('.field-value').toggleClass('hidden');
 		});
 
 		var validator = $('#bronto-email-signup-form').validate({
@@ -43,22 +52,9 @@
 				action = 'broes_update_settings';
 			}
 
-			var form = $(this).parents('#bronto-email-signup-form'),
-				data = {
-					action: action,
-					_ajax_nonce: broes.nonce,
-					'api_key': form.find('#broes_api_key').val(),
-					'webform_url': form.find('#broes_webform_url').val(),
-					'webform_secret': form.find('#broes_webform_secret').val(),
-					'contact': form.find('input[name=broes_contact]:checked').val(),
-					'list_ids': form.find('#broes_list_ids').val(),
-					'fields': form.find('input[name="broes_fields[]"]').map(function(){return $(this).val();}).get(),
-					'required_fields': form.find('input[name="broes_required_fields[]"]:checked').map(function(){return $(this).val();}).get(),
-					'email': form.find('#broes_test_email').val(),
-					'cta': form.find('#broes_cta').val(),
-					'success_message': form.find('#broes_success_message').val(),
-					'registered_message': form.find('#broes_registered_message').val()
-				};
+			var data = serialize($(this).parents('#bronto-email-signup-form')[0], { hash: true });
+			data.action = action;
+			data['_ajax_nonce'] = broes.nonce;
 
 			if (!validator.form()) return false;
 			toggleForm(container, true);
@@ -102,18 +98,29 @@
 		$('.notice').remove();
 	}
 
-	function newListItem(val, name) {
-		var html = '<li data-name="' + name + '" data-value="' + val + '">';
+	function newListItem(val, data) {
+		var html = '<li data-name="' + data.name + '" data-value="' + val + '">';
 		html += '<div class="field sort">';
-		html += '<input type="hidden" name="broes_fields[]" value="' + val + '">';
-		html += '<span>' + name + '</span>';
+		html += '<input type="hidden" name="broes_fields[' + count + '][id]" value="' + val + '">';
+		html += '<span>' + data.name + '</span>';
 		html += '<span class="remove dashicons dashicons-no-alt"></span>';
 		html += '</div>';
 		html += '<div class="field">';
-		html += '<input type="checkbox" id="' + name + '-required" name="broes_required_fields[]" value="' + val + '">';
-		html += '<label for="' + name + '-required">Required</label>';
+		html += '<input type="checkbox" id="' + data.name + '-required" name="broes_fields[' + count + '][required]" value="' + val + '">';
+		html += '<label for="' + data.name + '-required">Required</label>';
 		html += '</div>';
+		if ( data.type == 'text' ) {
+			html += '<div class="field field-hidden">';
+			html += '<input type="checkbox" id="' + val + '-hidden" name="broes_fields[' + count + '][hidden]" value="' + val + '">';
+			html += '<label for="' + val + '-hidden">Hidden</label>';
+			html += '</div>';
+			html += '<div class="field field-value hidden">';
+			html += '<label for="' + val + '-value">Value</label>';
+			html += '<input type="text" id="' + data.name + '-value" name="broes_fields[' + count + '][value]">';
+			html += '</div>';
+		}
 		html += '</li>';
+		count++;
 		return html;
 	}
 
