@@ -80,27 +80,44 @@
 	            The select box below contains all of your Bronto fields. You may add one or more fields to your form, and sort the fields by dragging them. You may also, optionally, mark each field as a required field.
 	          </p>
 						<ul>
-							<?php foreach($this->fields as $field) : ?>
-								<?php if ( !empty( $this->broes_fields ) && in_array( $field->id, $this->broes_fields ) ) : ?>
+							<?php foreach($this->broes_fields as $key => $broes_field) : ?>
+								<?php
+								$field_key = array_search(
+									$broes_field['id'],
+									array_map(function($e) {
+										return $e->id;
+									}, $this->fields)
+								);
+								$field = $this->fields[$field_key];
+								?>
 								<li data-name="<?php echo $field->label; ?>" data-value="<?php echo $field->id; ?>">
-									<div class="field sort">
-										<input type="hidden" name="broes_fields[]" value="<?php echo $field->id; ?>">
-										<span class="field-label"><?php echo $field->label; ?></span>
-										<span class="remove dashicons dashicons-no-alt"></span>
-									</div>
-									<div class="field">
-										<input type="checkbox" id="<?php echo $field->label; ?>-required" name="broes_required_fields[]" value="<?php echo $field->id; ?>"<?php echo ( !empty( $this->broes_required_fields ) && in_array( $field->id, $this->broes_required_fields ) ) ? ' checked="checked"' : ''; ?>>
-										<label for="<?php echo $field->label; ?>-required">Required</label>
-									</div>
+								  <div class="field sort">
+								    <input type="hidden" name="broes_fields[<?php echo $key; ?>][id]" value="<?php echo $field->id; ?>">
+								    <span class="field-label"><?php echo $field->label; ?></span>
+								    <span class="remove dashicons dashicons-no-alt"></span>
+								  </div>
+								  <div class="field">
+								    <input type="checkbox" id="<?php echo $field->label; ?>-required" name="broes_fields[<?php echo $key; ?>][required]" value="1"<?php echo ( array_key_exists( 'required', $broes_field ) ) ? ' checked="checked"' : ''; ?>>
+								    <label for="<?php echo $field->label; ?>-required">Required</label>
+								  </div>
+								  <?php if ( $field->type == 'text' ) : ?>
+								  <div class="field field-hidden">
+								    <input type="checkbox" id="<?php echo $field->label; ?>-hidden" name="broes_fields[<?php echo $key; ?>][hidden]" value="1"<?php echo ( array_key_exists( 'hidden', $broes_field ) ) ? ' checked="checked"' : ''; ?>>
+								    <label for="<?php echo $field->label; ?>-hidden">Hidden</label>
+								  </div>
+								  <div class="field field-value hidden">
+										<label for="<?php echo $field->label; ?>-value">Value</label>
+								    <input type="text" id="<?php echo $field->label; ?>-value" name="broes_fields[<?php echo $key; ?>][value]"<?php echo ( array_key_exists( 'value', $broes_field ) ) ? ' value="' . $broes_field['value'] . '"' : ''; ?>>
+								  </div>
+								  <?php endif; ?>
 								</li>
-								<?php endif; ?>
 							<?php endforeach; ?>
 						</ul>
 						<div class="sortable-form">
 							<select id="broes_fields" aria-describedby="api-list-id">
 								<?php foreach($this->fields as $field) : ?>
 									<?php if ( empty( $this->broes_fields ) || !in_array( $field->id, $this->broes_fields ) ) : ?>
-									<option data-name="<?php echo $field->label; ?>" value="<?php echo $field->id; ?>"><?php echo $field->label; ?></option>
+									<option data-name="<?php echo $field->label; ?>" data-type="<?php echo $field->type; ?>" value="<?php echo $field->id; ?>"><?php echo $field->label; ?></option>
 									<?php endif; ?>
 								<?php endforeach; ?>
 							</select>
