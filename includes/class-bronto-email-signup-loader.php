@@ -41,6 +41,8 @@ class Bronto_Email_Signup_Loader {
 	 */
 	protected $filters;
 
+	protected $options;
+
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
 	 *
@@ -50,6 +52,7 @@ class Bronto_Email_Signup_Loader {
 
 		$this->actions = array();
 		$this->filters = array();
+		$this->options = array();
 
 	}
 
@@ -79,6 +82,10 @@ class Bronto_Email_Signup_Loader {
 	 */
 	public function add_filter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
 		$this->filters = $this->add( $this->filters, $hook, $component, $callback, $priority, $accepted_args );
+	}
+
+	public function add_option( $hook, $component ) {
+		$this->options = $this->add( $this->options, $hook, $component );
 	}
 
 	/**
@@ -122,6 +129,10 @@ class Bronto_Email_Signup_Loader {
 
 		foreach ( $this->actions as $hook ) {
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
+		}
+
+		foreach ( $this->options as $hook ) {
+			add_option( $hook['hook'], $hook['component'] );
 		}
 
 	}

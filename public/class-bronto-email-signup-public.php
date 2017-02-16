@@ -59,19 +59,17 @@ class Bronto_Email_Signup_Public {
 	 * @param      string    $bronto_email_signup       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $bronto_email_signup, $version ) {
+	public function __construct( $bronto_email_signup, $version, $option_fields ) {
 
 		$this->bronto_email_signup = $bronto_email_signup;
+		$this->option_fields = $option_fields;
 		$this->version = $version;
-		$broes_api_key = get_option( 'broes_api_key' );
-		$this->broes_fields = get_option( 'broes_fields' );
-		$this->broes_required_fields = get_option( 'broes_required_fields' );
-		$this->broes_contact = get_option( 'broes_contact' );
-		$this->broes_success_message = get_option( 'broes_success_message' );
-		$this->broes_registered_message = get_option( 'broes_registered_message' );
-		$this->broes_cta = ( get_option( 'broes_cta' ) !== '' ) ? get_option( 'broes_cta' ) : 'Submit';
+		foreach ($this->option_fields as $key => $value) {
+			$this->$key = get_option( $key );
+		}
+		$this->broes_cta = ( $this->broes_cta !== '' ) ? $this->broes_cta : 'Submit';
 
-		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $broes_api_key ) );
+		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $this->broes_api_key ) );
 		if ( $api->connection ) {
 			$this->all_fields = $api->get_fields();
 			$this->input_objects = $this->get_input_objects();

@@ -29,6 +29,8 @@
  */
 class Bronto_Email_Signup {
 
+	protected $option_fields;
+
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
@@ -70,6 +72,18 @@ class Bronto_Email_Signup {
 
 		$this->bronto_email_signup = 'bronto-email-signup';
 		$this->version = '0.1.2';
+		$this->option_fields = array(
+			'broes_api_key' => '',
+			'broes_webform_url' => '',
+			'broes_webform_secret' => '',
+			'broes_contact' => '',
+			'broes_list_ids' => '',
+			'broes_fields' => '',
+			'broes_required_fields' => '',
+			'broes_cta' => '',
+			'broes_success_message' => '',
+			'broes_registered_message' => ''
+		);
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -153,7 +167,7 @@ class Bronto_Email_Signup {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Bronto_Email_Signup_Admin( $this->get_bronto_email_signup(), $this->get_version() );
+		$plugin_admin = new Bronto_Email_Signup_Admin( $this->get_bronto_email_signup(), $this->get_version(), $this->get_option_fields() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -174,7 +188,7 @@ class Bronto_Email_Signup {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Bronto_Email_Signup_Public( $this->get_bronto_email_signup(), $this->get_version() );
+		$plugin_public = new Bronto_Email_Signup_Public( $this->get_bronto_email_signup(), $this->get_version(), $this->get_option_fields() );
 
 		$this->loader->add_action( 'init', $plugin_public, 'shortcode' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
@@ -222,4 +236,7 @@ class Bronto_Email_Signup {
 		return $this->version;
 	}
 
+	public function get_option_fields() {
+		return $this->option_fields;
+	}
 }
