@@ -9,17 +9,22 @@ var count;
 		var container = $('.bronto-email-signup');
 		var sortableList = $('.sortable ul');
 		var sortableSelect = $('.sortable select');
-		count = $('.sortable li').length;
-		console.log(count);
 		sortableList.sortable({
 			stop: function(e, ui) {
-
+				$('.sortable li').each(function(i) {
+					var inputs = $(this).find('input').each(function() {
+						var name = $(this).attr('name');
+						var updated = name.replace(/broes_fields\[\d*\]\[(.*?)\]/, 'broes_fields[' + i + '][$1]');
+						$(this).attr('name', updated);
+					});
+				});
 			}
 		});
 		toggleForm(container, false);
 		$('.sortable-form button').on('click', function(e) {
 			e.preventDefault();
 			var selected = $(this).parents('.sortable-form').find('option:selected');
+			count = $('.sortable li').length;
 			selected.prop('disabled', true).prop('selected', false);
 			sortableList.append(newListItem( selected.val(), selected.data() ));
 		});

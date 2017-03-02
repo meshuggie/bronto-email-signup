@@ -80,6 +80,7 @@
 	            The select box below contains all of your Bronto fields. You may add one or more fields to your form, and sort the fields by dragging them. You may also, optionally, mark each field as a required field.
 	          </p>
 						<ul>
+							<?php $i=0; ?>
 							<?php foreach($this->broes_fields as $key => $broes_field) : ?>
 								<?php
 								$field_key = array_search(
@@ -100,17 +101,21 @@
 								    <input type="checkbox" id="<?php echo $field->label; ?>-required" name="broes_fields[<?php echo $key; ?>][required]" value="1"<?php echo ( array_key_exists( 'required', $broes_field ) ) ? ' checked="checked"' : ''; ?>>
 								    <label for="<?php echo $field->label; ?>-required">Required</label>
 								  </div>
+									<div class="field field-sort hidden">
+								    <input type="hidden" id="<?php echo $field->label; ?>-sort" name="broes_fields[<?php echo $key; ?>][sort]" value="<?php echo $i; ?>">
+								  </div>
 								  <?php if ( $field->type == 'text' ) : ?>
 								  <div class="field field-hidden">
 								    <input type="checkbox" id="<?php echo $field->label; ?>-hidden" name="broes_fields[<?php echo $key; ?>][hidden]" value="1"<?php echo ( array_key_exists( 'hidden', $broes_field ) ) ? ' checked="checked"' : ''; ?>>
 								    <label for="<?php echo $field->label; ?>-hidden">Hidden</label>
 								  </div>
-								  <div class="field field-value hidden">
+								  <div class="field field-value<?php echo ( !array_key_exists( 'hidden', $broes_field ) ) ? ' hidden' : ''; ?>">
 										<label for="<?php echo $field->label; ?>-value">Value</label>
 								    <input type="text" id="<?php echo $field->label; ?>-value" name="broes_fields[<?php echo $key; ?>][value]"<?php echo ( array_key_exists( 'value', $broes_field ) ) ? ' value="' . $broes_field['value'] . '"' : ''; ?>>
 								  </div>
 								  <?php endif; ?>
 								</li>
+								<?php $i++; ?>
 							<?php endforeach; ?>
 						</ul>
 						<div class="sortable-form">
