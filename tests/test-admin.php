@@ -6,19 +6,7 @@
  */
 
 class AdminTest extends WP_UnitTestCase {
-	private $plugin,
-		$fields = array(
-			'broes_api_key' => '',
-			'broes_webform_url' => '',
-			'broes_webform_secret' => '',
-			'broes_contact' => '',
-			'broes_list_ids' => '',
-			'broes_fields' => '',
-			'broes_required_fields' => '',
-			'broes_cta' => '',
-			'broes_success_message' => '',
-			'broes_registered_message' => ''
-		);
+	private $plugin;
 
 	public function setUp() {
 		parent::setUp();
