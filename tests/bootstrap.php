@@ -5,6 +5,9 @@
  * @package Bronto_Email_Signup
  */
 
+ // Be sure to run cmd on CLI prior to running tests
+ // bash bin/install-wp-tests.sh wordpress_test root '' localhost latest
+
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 if ( ! $_tests_dir ) {
 	$_tests_dir = '/tmp/wordpress-tests-lib';

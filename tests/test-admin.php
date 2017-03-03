@@ -22,13 +22,7 @@ class AdminTest extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
-		foreach ($this->fields as $key => $value) {
-			add_option($key, $value);
-		}
-	}
-
-	public function tearDown() {
-		parent::tearDown();
+		activate_bronto_email_signup();
 	}
 
 	public function testPluginActive() {
@@ -39,7 +33,15 @@ class AdminTest extends WP_UnitTestCase {
 	public function testAdminInit() {
 		$this->setUp();
 		foreach ( $this->fields as $key => $value ) {
-			$this->assertTrue( empty( get_option( $key ) ) );
+			$option = get_option( $key );
+			$this->assertTrue( is_string( $option ) );
+			// fwrite(STDERR, print_r($option, TRUE));
 		}
 	}
+
+	public function tearDown() {
+		parent::tearDown();
+		deactivate_bronto_email_signup();
+	}
+
 }
