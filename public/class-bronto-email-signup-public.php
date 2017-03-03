@@ -185,6 +185,7 @@ class Bronto_Email_Signup_Public {
 		$required_label = ( array_key_exists( 'required', $this->broes_fields[$field_key] ) ) ? '<span class="required">*</span>' : '';
 		$required_input = ( array_key_exists( 'required', $this->broes_fields[$field_key] ) ) ? ' aria-required="true"' : '';
 		$hidden = ( array_key_exists( 'hidden', $this->broes_fields[$field_key] ) ) ? ' hidden' : '';
+		$value = ( array_key_exists( 'value', $this->broes_fields[$field_key] ) ) ? ' value="' . $this->broes_fields[$field_key]['value'] . '"' : '';
 	  switch($field->type) {
 	    case 'select' :
 				$html = '<div role="group" class="form-group' . $hidden . '">';
@@ -262,7 +263,7 @@ class Bronto_Email_Signup_Public {
 				$html .= $field->name;
 				$html .= $required_label;
 				$html .= '</label>';
-				$html .= '<input type="' . $type . '" id="' . $field->id . '" name="' . $field->id . '"' . $required_input . '>';
+				$html .= '<input type="' . $type . '" id="' . $field->id . '" name="' . $field->id . '"' . $required_input . $value . '>';
 				$html .= '</div>';
 				return $html;
 			}
