@@ -11,6 +11,7 @@
  * @package    Bronto_Email_Signup
  * @subpackage Bronto_Email_Signup/public/partials
  */
+
 ?>
 
 <form id="<?php echo $this->prefix; ?>email-signup" class="bronto-email-signup disabled" onsubmit="return false;">
