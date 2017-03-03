@@ -22,9 +22,9 @@
  */
 class Bronto_Email_Signup_Public {
 
-	private $broes_fields,
-		$broes_required_fields,
-		$all_fields,
+	private $option_fields,
+		$broes_fields,
+		$fields,
 		$input_objects,
 		$input_fields,
 		$broes_contact,
@@ -71,7 +71,7 @@ class Bronto_Email_Signup_Public {
 
 		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $this->broes_api_key ) );
 		if ( $api->connection ) {
-			$this->all_fields = $api->get_fields();
+			$this->fields = $api->get_fields();
 			$this->input_objects = $this->get_input_objects();
 			$this->expected_inputs = $this->get_expected_inputs();
 		}
@@ -146,11 +146,14 @@ class Bronto_Email_Signup_Public {
 	private function get_input_objects() {
 		$input_fields = array();
 		if ( !is_array( $this->broes_fields ) ) return $input_fields;
-		foreach ($this->broes_fields as $value) {
-		  $filtered = array_filter($this->all_fields, function($el) use ($value) {
-		    return $el->id == $value;
-		  });
-		  $input_fields[] = $filtered;
+		foreach($this->broes_fields as $key => $broes_field) {
+		  $field_key = array_search(
+		    $broes_field['id'],
+		    array_map(function($e) {
+		      return $e->id;
+		    }, $this->fields)
+		  );
+		  $input_fields[] = $this->fields[$field_key];
 		}
 		return $input_fields;
 	}
@@ -160,19 +163,31 @@ class Bronto_Email_Signup_Public {
 		if ( !is_array( $this->input_objects ) ) {
 			return $input_html;
 		}
-		foreach($this->input_objects as $field) {
-		  $field = array_values($field);
-		  $input_html[] = $this->input_html($field[0]);
+		foreach($this->broes_fields as $key => $broes_field) {
+		  $field_key = array_search(
+		    $broes_field['id'],
+		    array_map(function($e) {
+		      return $e->id;
+		    }, $this->fields)
+		  );
+		  $input_html[] = $this->input_html($this->fields[$field_key]);
 		}
 		return $input_html;
 	}
 
 	private function input_html($field) {
-		$required_label = ( !empty( $this->broes_required_fields ) && in_array( $field->id, $this->broes_required_fields ) ) ? '<span class="required">*</span>' : '';
-		$required_input = ( !empty( $this->broes_required_fields ) && in_array( $field->id, $this->broes_required_fields ) ) ? ' aria-required="true"' : '';
+		$field_key = array_search(
+			$field->id,
+			array_map(function($e) {
+				return $e['id'];
+			}, $this->broes_fields)
+		);
+		$required_label = ( array_key_exists( 'required', $this->broes_fields[$field_key] ) ) ? '<span class="required">*</span>' : '';
+		$required_input = ( array_key_exists( 'required', $this->broes_fields[$field_key] ) ) ? ' aria-required="true"' : '';
+		$hidden = ( array_key_exists( 'hidden', $this->broes_fields[$field_key] ) ) ? ' hidden' : '';
 	  switch($field->type) {
 	    case 'select' :
-				$html = '<div role="group" class="form-group">';
+				$html = '<div role="group" class="form-group' . $hidden . '">';
 	      $html .= '<label for="' . $this->prefix . $field->name . '">';
 				$html .= $field->name;
 				$html .= $required_label;
@@ -186,7 +201,7 @@ class Bronto_Email_Signup_Public {
 				$html .= '</div>';
 	      return $html;
 	    case 'checkbox' :
-				$html = '<div role="checkbox" aria-labelledby="' . $this->prefix . $field->name . '" class="form-group">';
+				$html = '<div role="checkbox" aria-labelledby="' . $this->prefix . $field->name . '" class="form-group' . $hidden . '">';
 				if (isset($field->options)) {
 					$html .= '<label id="' . $this->prefix . $field->name . '">';
 					$html .= $field->name;
@@ -199,13 +214,16 @@ class Bronto_Email_Signup_Public {
 		        $html .= '<label for="' . $this->prefix . $option->label . '">' . $option->label . '</label>';
 		      }
 				} else {
-					$html .= '<input type="' . $field->type . '" id="' . $field->id . '" name="' . $field->id . '">';
-					$html .= '<label for="' . $field->id . '">' . $field->name . '</label>';
+					$html .= '<input type="' . $field->type . '" id="' . $field->id . '" name="' . $field->id . '"' . $required_input . '>';
+					$html .= '<label for="' . $field->id . '">';
+					$html .= $field->name;
+					$html .= $required_label;
+					$html .= '</label>';
 				}
 	      $html .= '</div>';
 	      return $html;
 	    case 'radio' :
-				$html = '<div role="radiogroup" aria-labelledby="' . $this->prefix . $field->name . '" class="form-group">';
+				$html = '<div role="radiogroup" aria-labelledby="' . $this->prefix . $field->name . '" class="form-group' . $hidden . '">';
 	      $html .= '<label id="' . $this->prefix . $field->name . '">';
 				$html .= $field->name;
 				$html .= $required_label;
@@ -222,7 +240,7 @@ class Bronto_Email_Signup_Public {
 	      $html .= '</div>';
 	      return $html;
 	    case 'textarea' :
-				$html = '<div role="group">';
+				$html = '<div role="group" class="' . $hidden . '">';
 	      $html .= '<label for="' . $field->id . '">';
 				$html .= $field->name;
 				$html .= $required_label;
@@ -239,7 +257,7 @@ class Bronto_Email_Signup_Public {
 					default :
 						$type = 'text';
 				}
-				$html = '<div role="group" class="form-group">';
+				$html = '<div role="group" class="form-group' . $hidden . '">';
 	      $html .= '<label for="' . $field->id . '">';
 				$html .= $field->name;
 				$html .= $required_label;
@@ -253,12 +271,21 @@ class Bronto_Email_Signup_Public {
 
 	private function get_expected_inputs() {
 		$inputs = array();
-		foreach ( $this->input_objects as $field ) {
-		  $field = array_values($field);
-			if ( !empty( $field[0] ) ) {
-				$inputs[] = $field[0]->id;
-			}
+		foreach($this->broes_fields as $key => $broes_field) {
+		  $field_key = array_search(
+		    $broes_field['id'],
+		    array_map(function($e) {
+		      return $e->id;
+		    }, $this->fields)
+		  );
+		  $inputs[] = $this->fields[$field_key]->id;
 		}
+		// foreach ( $this->broes_fields as $field ) {
+		//   $field = array_values($field);
+		// 	if ( !empty( $field[0] ) ) {
+		// 		$inputs[] = $field[0]->id;
+		// 	}
+		// }
 		$inputs[] = $this->broes_contact;
 		return $inputs;
 	}
