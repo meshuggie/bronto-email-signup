@@ -22,12 +22,21 @@ class AdminTest extends WP_UnitTestCase {
 	}
 
 	public function testAdminInit() {
-		$this->setUp();
 		foreach ( $this->fields as $key => $value ) {
 			$option = get_option( $key );
 			$this->assertTrue( is_string( $option ) );
 			// fwrite(STDERR, print_r($option, TRUE));
 		}
+	}
+
+	public function testAdminSave() {
+		$broes_nonce = wp_create_nonce( 'broes_nonce' );
+		$_POST['_ajax_nonce'] = $broes_nonce;
+		foreach ( $this->fields as $key => $value ) {
+			$_POST[$key] = 'klsjdf';
+		}
+		$this->assertTrue( check_ajax_referer( 'broes_nonce' ) );
+		// $url = admin_url( 'admin.php?page=bronto-email-signup-options' );
 	}
 
 	public function tearDown() {
