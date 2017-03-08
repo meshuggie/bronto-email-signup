@@ -28,3 +28,8 @@ intermediate
 .idea
 cache
 node_modules
+vendor
+bin
+
+# Files to ignore
+composer.phar

@@ -1,0 +1,17 @@
+{
+  "require": {
+    "guzzlehttp/guzzle": "^6.2",
+    "jonnyw/php-phantomjs": "4.*"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "PhantomInstaller\\Installer::installPhantomJS"
+    ],
+    "post-update-cmd": [
+      "PhantomInstaller\\Installer::installPhantomJS"
+    ]
+  },
+  "config": {
+    "bin-dir": "bin"
+  }
+}
