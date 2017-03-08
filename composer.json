@@ -1,7 +1,8 @@
 {
   "require": {
     "guzzlehttp/guzzle": "^6.2",
-    "jonnyw/php-phantomjs": "4.*"
+    "jonnyw/php-phantomjs": "4.*",
+    "fzaninotto/faker": "^1.6"
   },
   "scripts": {
     "post-install-cmd": [
