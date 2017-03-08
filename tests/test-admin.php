@@ -14,6 +14,8 @@ class AdminTest extends WP_UnitTestCase {
 		$this->plugin = new Bronto_Email_Signup();
 		$this->plugin_admin = new Bronto_Email_Signup_Admin( $this->plugin->get_bronto_email_signup(), $this->plugin->get_version(), $this->plugin->get_option_fields() );
 		$this->fields = $this->plugin->get_option_fields();
+
+		$this->faker = Faker\Factory::create();
 	}
 
 	public function testPluginActive() {
