@@ -29,7 +29,6 @@ class Bronto_Email_Signup_Admin {
 		$broes_contact,
 		$broes_list_ids,
 		$broes_fields,
-		$broes_required_fields,
 		$broes_cta,
 		$broes_success_message,
 		$broes_registered_message,
@@ -173,6 +172,9 @@ class Bronto_Email_Signup_Admin {
 
 	public function update_settings() {
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( '-1' );
+		}
 		check_ajax_referer( 'broes_nonce' );
 		update_option( 'broes_api_key', $_POST['broes_api_key'] );
 		update_option( 'broes_webform_url', $_POST['broes_webform_url'] );
@@ -180,7 +182,6 @@ class Bronto_Email_Signup_Admin {
 		update_option( 'broes_contact', $_POST['broes_contact'] );
 		update_option( 'broes_list_ids', $_POST['broes_list_ids'] );
 		update_option( 'broes_fields', $_POST['broes_fields'] );
-		update_option( 'broes_required_fields', $_POST['broes_required_fields'] );
 		update_option( 'broes_cta', $_POST['broes_cta'] );
 		update_option( 'broes_success_message', $_POST['broes_success_message'] );
 		update_option( 'broes_registered_message', wp_kses_post($_POST['broes_registered_message']) );

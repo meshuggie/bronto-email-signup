@@ -19,7 +19,6 @@ class Bronto_Email_Signup_Activator {
 		add_option( 'broes_contact' );
 		add_option( 'broes_list_ids' );
 		add_option( 'broes_fields' );
-		add_option( 'broes_required_fields' );
 		add_option( 'broes_cta' );
 		add_option( 'broes_success_message' );
 		add_option( 'broes_registered_message' );
@@ -29,7 +28,6 @@ class Bronto_Email_Signup_Activator {
 		register_setting( 'broes_settings', 'broes_contact' );
 		register_setting( 'broes_settings', 'broes_list_ids' );
 		register_setting( 'broes_settings', 'broes_fields' );
-		register_setting( 'broes_settings', 'broes_required_fields' );
 		register_setting( 'broes_settings', 'broes_cta' );
 		register_setting( ' broes_settings', 'broes_success_message' );
 		register_setting( ' broes_settings', 'broes_registered_message' );
