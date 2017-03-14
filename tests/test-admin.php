@@ -30,7 +30,6 @@ class AdminTest extends WP_Ajax_UnitTestCase {
 		foreach ( $this->helper->fields as $key => $value ) {
 			$option = get_option( $key );
 			$this->assertTrue( is_string( $option ) );
-			// fwrite(STDERR, print_r($option, TRUE));
 		}
 	}
 
@@ -69,6 +68,7 @@ class AdminTest extends WP_Ajax_UnitTestCase {
 			$option = get_option( $key );
 			$this->assertEquals( $option, '' );
 		}
+		// fwrite(STDERR, print_r($option, TRUE));
 	}
 
 	public function tearDown() {
