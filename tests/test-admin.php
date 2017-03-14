@@ -5,17 +5,20 @@
  * @package Bronto_Email_Signup
  */
 
-class AdminTest extends WP_UnitTestCase {
-	private $plugin;
+class AdminTest extends WP_Ajax_UnitTestCase {
+	private $plugin, $client, $ajax;
 
 	public function setUp() {
 		parent::setUp();
 		activate_bronto_email_signup();
-		$this->plugin = new Bronto_Email_Signup();
-		$this->plugin_admin = new Bronto_Email_Signup_Admin( $this->plugin->get_bronto_email_signup(), $this->plugin->get_version(), $this->plugin->get_option_fields() );
-		$this->fields = $this->plugin->get_option_fields();
 
-		$this->faker = Faker\Factory::create();
+		$this->plugin = new Bronto_Email_Signup();
+		$this->plugin_admin = new Bronto_Email_Signup_Admin(
+			$this->plugin->get_bronto_email_signup(),
+			$this->plugin->get_version(),
+			$this->plugin->get_option_fields()
+		);
+		$this->helper = new Test_Helper($this->plugin);
 	}
 
 	public function testPluginActive() {
@@ -24,7 +27,7 @@ class AdminTest extends WP_UnitTestCase {
 	}
 
 	public function testAdminInit() {
-		foreach ( $this->fields as $key => $value ) {
+		foreach ( $this->helper->fields as $key => $value ) {
 			$option = get_option( $key );
 			$this->assertTrue( is_string( $option ) );
 			// fwrite(STDERR, print_r($option, TRUE));
@@ -32,13 +35,40 @@ class AdminTest extends WP_UnitTestCase {
 	}
 
 	public function testAdminSave() {
-		$broes_nonce = wp_create_nonce( 'broes_nonce' );
-		$_POST['_ajax_nonce'] = $broes_nonce;
-		foreach ( $this->fields as $key => $value ) {
-			$_POST[$key] = 'klsjdf';
+		$this->_setRole( 'administrator' );
+		$this->helper->post_data();
+
+		try {
+			$this->_handleAjax( 'broes_update_settings' );
+		} catch ( WPAjaxDieContinueException $e ) {}
+		$response = json_decode($this->_last_response);
+
+		$this->assertEquals( 'success', $response->result );
+
+		foreach ( $this->helper->fields as $key => $value ) {
+			$option = get_option( $key );
+			$expected = $this->helper->field_values[$key];
+			$this->assertEquals( $option, $expected );
 		}
-		$this->assertTrue( check_ajax_referer( 'broes_nonce' ) );
-		// $url = admin_url( 'admin.php?page=bronto-email-signup-options' );
+
+	}
+
+	public function testAdminPermissions() {
+	  $this->_setRole( 'subscriber' );
+		$this->helper->post_data();
+
+		try {
+			$this->_handleAjax( 'broes_update_settings' );
+		} catch ( WPAjaxDieStopException $e ) {}
+		$response = json_decode($this->_last_response);
+
+	  $this->assertTrue( isset( $e ) );
+	  $this->assertEquals( '-1', $e->getMessage() );
+
+		foreach ( $this->helper->fields as $key => $value ) {
+			$option = get_option( $key );
+			$this->assertEquals( $option, '' );
+		}
 	}
 
 	public function tearDown() {
