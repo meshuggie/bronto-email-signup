@@ -71,6 +71,10 @@ class AdminTest extends WP_Ajax_UnitTestCase {
 		// fwrite(STDERR, print_r($option, TRUE));
 	}
 
+	public function testApiFailed() {
+		$this->assertFalse( $this->plugin_admin->api_initiated  );
+	}
+
 	public function tearDown() {
 		parent::tearDown();
 		deactivate_bronto_email_signup();

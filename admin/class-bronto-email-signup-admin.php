@@ -22,6 +22,8 @@
  */
 class Bronto_Email_Signup_Admin {
 
+	public $api_initiated;
+
 	private $option_fields,
 		$broes_api_key,
 		$broes_webform_url,
@@ -32,7 +34,6 @@ class Bronto_Email_Signup_Admin {
 		$broes_cta,
 		$broes_success_message,
 		$broes_registered_message,
-		$api_initiated,
 		$lists,
 		$fields;
 
