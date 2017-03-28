@@ -86,7 +86,9 @@ class Bronto_Email_Signup_Public {
 	public function bronto_email_signup_shortcode( $atts = array(), $content = null ) {
 		$this->prefix = (isset($atts['prefix-id'])) ? $atts['prefix-id'] . '-' : 'broes-';
 		$this->input_fields = $this->get_input_fields();
+		ob_start();
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/bronto-email-signup-public-display.php';
+		return ob_get_clean();
 	}
 
 	public function webform_shortcode() {
@@ -96,7 +98,9 @@ class Bronto_Email_Signup_Public {
 	public function bronto_webform_shortcode( $atts = array(), $content = null ) {
 		$this->prefix = (isset($atts['prefix-id'])) ? $atts['prefix-id'] . '-' : 'broes-';
 		$this->src = $atts['src'];
+		ob_start();
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/bronto-email-signup-webform-display.php';
+		return ob_get_clean();
 	}
 
 
