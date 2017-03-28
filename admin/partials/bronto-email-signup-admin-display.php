@@ -26,8 +26,12 @@
 			<?php if ($this->api_initiated) : ?>
 			<h4>Select and save your integration options below.</h4>
 			<p>
-				Once you've saved your options, you may embed the form into a post or page by using the shortcode.<br>
+				Once you've saved your options, you may embed the email signup form into a post or page by using the shortcode.<br>
 				<code>[broes_signup_form prefix-id="your-custom-id"]</code>
+			</p>
+			<p>
+				You may also embed a webform into a post or page by using this shortcode (src is the "Public Link To This Webform" as seen on the Webform Preview screen).<br>
+				<code>[broes_webform prefix-id="your-custom-id" src=""]</code>
 			</p>
 			<p>
 				You can also use the <b>Bronto Email Signup</b> widget, available on the <a href="<?php echo admin_url( 'widgets.php' ); ?>">Widgets page</a>, which allows you to add a sidebar widget with optional text above and below the form.

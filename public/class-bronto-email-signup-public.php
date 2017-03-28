@@ -32,7 +32,8 @@ class Bronto_Email_Signup_Public {
 		$broes_success_message,
 		$broes_registered_message,
 		$expected_inputs,
-		$prefix;
+		$prefix,
+		$webform;
 
 	/**
 	 * The ID of this plugin.
@@ -78,7 +79,7 @@ class Bronto_Email_Signup_Public {
 
 	}
 
-	public function shortcode() {
+	public function signup_shortcode() {
 		add_shortcode('broes_signup_form', array( $this, 'bronto_email_signup_shortcode' ) );
 	}
 
@@ -87,6 +88,17 @@ class Bronto_Email_Signup_Public {
 		$this->input_fields = $this->get_input_fields();
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/bronto-email-signup-public-display.php';
 	}
+
+	public function webform_shortcode() {
+		add_shortcode('broes_webform', array( $this, 'bronto_webform_shortcode' ) );
+	}
+
+	public function bronto_webform_shortcode( $atts = array(), $content = null ) {
+		$this->prefix = (isset($atts['prefix-id'])) ? $atts['prefix-id'] . '-' : 'broes-';
+		$this->src = $atts['src'];
+		include plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/bronto-email-signup-webform-display.php';
+	}
+
 
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
