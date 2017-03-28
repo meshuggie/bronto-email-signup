@@ -71,7 +71,7 @@ class Bronto_Email_Signup {
 	public function __construct() {
 
 		$this->bronto_email_signup = 'bronto-email-signup';
-		$this->version = '0.1.2';
+		$this->version = '0.1.3';
 		$this->option_fields = array(
 			'broes_api_key' => '',
 			'broes_webform_url' => '',
