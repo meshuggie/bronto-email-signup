@@ -71,7 +71,7 @@ class Bronto_Email_Signup {
 	public function __construct() {
 
 		$this->bronto_email_signup = 'bronto-email-signup';
-		$this->version = '0.1.2';
+		$this->version = '0.1.3';
 		$this->option_fields = array(
 			'broes_api_key' => '',
 			'broes_webform_url' => '',
@@ -189,7 +189,8 @@ class Bronto_Email_Signup {
 
 		$plugin_public = new Bronto_Email_Signup_Public( $this->get_bronto_email_signup(), $this->get_version(), $this->get_option_fields() );
 
-		$this->loader->add_action( 'init', $plugin_public, 'shortcode' );
+		$this->loader->add_action( 'init', $plugin_public, 'signup_shortcode' );
+		$this->loader->add_action( 'init', $plugin_public, 'webform_shortcode' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 

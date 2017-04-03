@@ -26,7 +26,7 @@
 			<?php if ($this->api_initiated) : ?>
 			<h4>Select and save your integration options below.</h4>
 			<p>
-				Once you've saved your options, you may embed the form into a post or page by using the shortcode.<br>
+				Once you've saved your options, you may embed the email signup form into a post or page by using the shortcode.<br>
 				<code>[broes_signup_form prefix-id="your-custom-id"]</code>
 			</p>
 			<p>
