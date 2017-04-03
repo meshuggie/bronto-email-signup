@@ -30,10 +30,6 @@
 				<code>[broes_signup_form prefix-id="your-custom-id"]</code>
 			</p>
 			<p>
-				You may also embed a webform into a post or page by using this shortcode (src is the "Public Link To This Webform" as seen on the Webform Preview screen).<br>
-				<code>[broes_webform prefix-id="your-custom-id" src=""]</code>
-			</p>
-			<p>
 				You can also use the <b>Bronto Email Signup</b> widget, available on the <a href="<?php echo admin_url( 'widgets.php' ); ?>">Widgets page</a>, which allows you to add a sidebar widget with optional text above and below the form.
 			</p>
 			<?php else : ?>
