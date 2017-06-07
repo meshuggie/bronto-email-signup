@@ -12,6 +12,7 @@ class Test_Helper {
     $this->faker->seed(1);
     $this->fields = $plugin->get_option_fields();
     $this->field_values = $this->field_values();
+    $this->contact_inputs = $this->contact_inputs();
   }
 
   public function field_values() {
@@ -30,9 +31,9 @@ class Test_Helper {
     return $field_values;
   }
 
-  public function post_data() {
+  public function post_data($values) {
     $_POST['_wpnonce'] = wp_create_nonce( 'my_nonce' );
-    foreach($this->field_values as $key => $value) {
+    foreach($values as $key => $value) {
       $_POST[$key] = $value;
     }
     return $_POST;
@@ -45,6 +46,20 @@ class Test_Helper {
       'sort' => $sort_number,
       'hidden' => $this->faker->boolean,
       'value' => $this->faker->word
+    ];
+  }
+
+  private function contact_inputs() {
+    $values = array();
+    for ($i=0; $i < 3; $i++) {
+      $values []= $this->faker->unique()->randomDigit;
+    }
+
+    return [
+      'api_key' => $this->faker->md5,
+      'list_ids' => $values,
+      'webform_url' => $this->faker->url,
+      'webform_secret' => $this->faker->md5
     ];
   }
 

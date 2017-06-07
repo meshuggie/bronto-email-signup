@@ -1,6 +1,7 @@
 <?php
 class Bronto_Email_Signup_Api {
-  public $connection;
+  public $connection,
+    $last_response;
   protected $client,
     $webform_url,
     $connection_data;
@@ -29,6 +30,7 @@ class Bronto_Email_Signup_Api {
       $this->connection = false;
     }
 
+    $this->last_response = $this->client->__getLastResponse();
     $this->connection_data = $connection_data;
 	}
 
