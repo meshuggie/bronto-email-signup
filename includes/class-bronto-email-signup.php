@@ -72,18 +72,7 @@ class Bronto_Email_Signup {
 
 		$this->bronto_email_signup = 'bronto-email-signup';
 		$this->version = '0.1.3';
-		$this->option_fields = array(
-			'broes_api_key' => '',
-			'broes_webform_url' => '',
-			'broes_webform_secret' => '',
-			'broes_contact' => '',
-			'broes_list_ids' => '',
-			'broes_fields' => '',
-			'broes_required_fields' => '',
-			'broes_cta' => '',
-			'broes_success_message' => '',
-			'broes_registered_message' => ''
-		);
+		$this->option_fields = new stdClass();
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -237,7 +226,28 @@ class Bronto_Email_Signup {
 		return $this->version;
 	}
 
+	/**
+	 * Autoloader for all broes WP options.
+	 *
+	 * @since     1.0.0
+	 * @return    string    The version number of the plugin.
+	 */
 	public function get_option_fields() {
+		$option_fields = array(
+			'broes_api_key' => '',
+			'broes_webform_url' => '',
+			'broes_webform_secret' => '',
+			'broes_contact' => '',
+			'broes_list_ids' => '',
+			'broes_fields' => '',
+			'broes_required_fields' => '',
+			'broes_cta' => '',
+			'broes_success_message' => '',
+			'broes_registered_message' => ''
+		);
+		foreach ($option_fields as $key => $value) {
+			$this->option_fields->$key = get_option( $key );
+		}
 		return $this->option_fields;
 	}
 }

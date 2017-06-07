@@ -19,7 +19,7 @@
   <fieldset disabled>
     <img src="<?php echo plugins_url( 'bronto-email-signup/public/dist/images/bronto-loading.svg' ); ?>" class="loading">
     <div role="group" class="form-group">
-      <?php if ($this->broes_contact == 'phone') : ?>
+      <?php if ($this->option_fields->broes_contact == 'phone') : ?>
       <label for="phone">Phone Number<span class="required">*</span></label>
       <input type="tel" name="mobileNumber" aria-required="true">
       <?php else : ?>
@@ -32,7 +32,7 @@
       echo $field;
     }
     ?>
-    <button type="submit"><?php echo $this->broes_cta; ?></button>
+    <button type="submit"><?php echo $this->option_fields->broes_cta; ?></button>
     <div class="response"></div>
   </fieldset>
 </form>

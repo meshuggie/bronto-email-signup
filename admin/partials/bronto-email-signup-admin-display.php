@@ -40,8 +40,8 @@
 				<tr valign="top">
 					<th scope="row"><label for="broes_api_key">API Key</label></th>
 					<td>
-	          <input type="text" id="broes_api_key" name="broes_api_key" class="regular-text" aria-describedby="api-key" value="<?php echo esc_attr($this->broes_api_key); ?>" placeholder="Enter SOAP API Access Token." />
-						<?php if (!$this->api_initiated && !empty($this->broes_api_key)) : ?>
+	          <input type="text" id="broes_api_key" name="broes_api_key" class="regular-text" aria-describedby="api-key" value="<?php echo esc_attr($this->option_fields->broes_api_key); ?>" placeholder="Enter SOAP API Access Token." />
+						<?php if (!$this->api_initiated && !empty($this->option_fields->broes_api_key)) : ?>
 						<label id="broes_api_key-error" class="error" for="broes_api_key">Your API key is incorrect.</label>
 						<?php endif; ?>
 	          <div id="api-key">
@@ -68,7 +68,7 @@
 	          </p>
 						<select multiple="multiple" name="broes_list_ids[]" id="broes_list_ids" class="widefat" size="9" aria-describedby="api-list-id">
 							<?php foreach($this->lists as $list) : ?>
-								<option value="<?php echo $list->id; ?>"<?php echo ( !empty( $this->broes_list_ids ) && in_array( $list->id, $this->broes_list_ids ) ) ? ' selected="selected"' : ''; ?>><?php echo $list->name; ?></option>
+								<option value="<?php echo $list->id; ?>"<?php echo ( !empty( $this->option_fields->broes_list_ids ) && in_array( $list->id, $this->option_fields->broes_list_ids ) ) ? ' selected="selected"' : ''; ?>><?php echo $list->name; ?></option>
 							<?php endforeach; ?>
 						</select>
 	        </td>
@@ -81,7 +81,7 @@
 	          </p>
 						<ul>
 							<?php $i=0; ?>
-							<?php foreach($this->broes_fields as $key => $broes_field) : ?>
+							<?php foreach($this->option_fields->broes_fields as $key => $broes_field) : ?>
 								<?php
 								$field_key = array_search(
 									$broes_field['id'],
@@ -121,7 +121,7 @@
 						<div class="sortable-form">
 							<select id="broes_fields" aria-describedby="api-list-id">
 								<?php foreach($this->fields as $field) : ?>
-									<?php if ( empty( $this->broes_fields ) || !in_array( $field->id, $this->broes_fields ) ) : ?>
+									<?php if ( empty( $this->option_fields->broes_fields ) || !in_array( $field->id, $this->option_fields->broes_fields ) ) : ?>
 									<option data-name="<?php echo $field->label; ?>" data-type="<?php echo $field->type; ?>" value="<?php echo $field->id; ?>"><?php echo $field->label; ?></option>
 									<?php endif; ?>
 								<?php endforeach; ?>
@@ -135,8 +135,8 @@
 					<td>
 						<fieldset>
 							<legend class="screen-reader-text"><span>Contact Type</span></legend>
-							<label><input type="radio" name="broes_contact" value="email"<?php echo ($this->broes_contact == 'email' || $this->broes_contact == '') ? ' checked="checked"' : ''; ?>> <span>Email</span></label><br>
-							<label><input type="radio" name="broes_contact" value="phone"<?php echo ($this->broes_contact == 'phone') ? ' checked="checked"' : ''; ?>> <span>Phone</span></label><br>
+							<label><input type="radio" name="broes_contact" value="email"<?php echo ($this->option_fields->broes_contact == 'email' || $this->option_fields->broes_contact == '') ? ' checked="checked"' : ''; ?>> <span>Email</span></label><br>
+							<label><input type="radio" name="broes_contact" value="phone"<?php echo ($this->option_fields->broes_contact == 'phone') ? ' checked="checked"' : ''; ?>> <span>Phone</span></label><br>
 						</fieldset>
 						<p class="description">
 							In Bronto, you are required to register a new contact via either their email or phone number. You must pick one.
@@ -146,7 +146,7 @@
 				<tr valign="top"<?php echo ( !$this->api_initiated ) ? ' class="hidden"' : ''; ?>>
 					<th scope="row"><label for="broes_cta">Signup CTA</label></th>
 					<td>
-	          <input type="text" id="broes_cta" name="broes_cta" class="regular-text" value="<?php echo esc_attr($this->broes_cta); ?>" placeholder="Enter CTA" />
+	          <input type="text" id="broes_cta" name="broes_cta" class="regular-text" value="<?php echo esc_attr($this->option_fields->broes_cta); ?>" placeholder="Enter CTA" />
 	          <p class="description">
 	            Enter a CTA for the form button.
 	          </p>
@@ -155,7 +155,7 @@
 				<tr valign="top"<?php echo ( !$this->api_initiated ) ? ' class="hidden"' : ''; ?>>
 					<th scope="row"><label for="broes_success_message">Signup Thank You</label></th>
 					<td>
-						<textarea id="broes_success_message" class="large-text code" name="broes_success_message"><?php echo esc_textarea( $this->broes_success_message ); ?></textarea>
+						<textarea id="broes_success_message" class="large-text code" name="broes_success_message"><?php echo esc_textarea( $this->option_fields->broes_success_message ); ?></textarea>
 	          <p class="description">
 	            Enter a success message to show the user after signup.
 	          </p>
@@ -164,7 +164,7 @@
 				<tr valign="top"<?php echo ( !$this->api_initiated ) ? ' class="hidden"' : ''; ?>>
 					<th scope="row"><label for="broes_registered_message">Already Registered Message</label></th>
 					<td>
-						<textarea id="broes_registered_message" class="large-text code" name="broes_registered_message"><?php echo esc_textarea( $this->broes_registered_message ); ?></textarea>
+						<textarea id="broes_registered_message" class="large-text code" name="broes_registered_message"><?php echo esc_textarea( $this->option_fields->broes_registered_message ); ?></textarea>
 	          <p class="description">
 	            Enter an "Already Registered" message to show the user when attempting to reregister.
 	          </p>
@@ -182,7 +182,7 @@
 				<tr valign="top"<?php echo ( !$this->api_initiated ) ? ' class="hidden"' : ''; ?>>
 					<th scope="row"><label for="broes_webform_url">Webform URL</label></th>
 					<td>
-	          <input type="text" id="broes_webform_url" name="broes_webform_url" class="regular-text" value="<?php echo esc_attr($this->broes_webform_url); ?>" placeholder="Enter Webform URL" />
+	          <input type="text" id="broes_webform_url" name="broes_webform_url" class="regular-text" value="<?php echo esc_attr($this->option_fields->broes_webform_url); ?>" placeholder="Enter Webform URL" />
 						<p class="description">
 							Enter the Webform URL up to the "manpref/" part. Do not enter "{CONTACT}" or "{VALIDATION_HASH}". For example,
 							<code>http://app.brontostaging.com/public/webform/lookup/d41d8cd98f00b204e9800998ecf8427e/d41d8cd98f00b204e9800998ecf8427e/manpref/</code>
@@ -192,7 +192,7 @@
 				<tr valign="top"<?php echo ( !$this->api_initiated ) ? ' class="hidden"' : ''; ?>>
 					<th scope="row"><label for="broes_webform_secret">Webform Shared Secret</label></th>
 					<td>
-	          <input type="password" id="broes_webform_secret" name="broes_webform_secret" class="regular-text" value="<?php echo esc_attr($this->broes_webform_secret); ?>" placeholder="Enter Webform Secret" />
+	          <input type="password" id="broes_webform_secret" name="broes_webform_secret" class="regular-text" value="<?php echo esc_attr($this->option_fields->broes_webform_secret); ?>" placeholder="Enter Webform Secret" />
 	        </td>
 				</tr>
 			</table>

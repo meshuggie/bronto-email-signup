@@ -9,6 +9,8 @@
 *.vi
 *~
 *.sass-cache
+composer.phar
+.todo
 
 # OS or Editor folders
 .DS_Store
@@ -28,3 +30,5 @@ intermediate
 .idea
 cache
 node_modules
+bin
+vendor

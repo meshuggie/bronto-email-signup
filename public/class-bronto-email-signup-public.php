@@ -63,14 +63,11 @@ class Bronto_Email_Signup_Public {
 	public function __construct( $bronto_email_signup, $version, $option_fields ) {
 
 		$this->bronto_email_signup = $bronto_email_signup;
-		$this->option_fields = $option_fields;
 		$this->version = $version;
-		foreach ($this->option_fields as $key => $value) {
-			$this->$key = get_option( $key );
-		}
-		$this->broes_cta = ( $this->broes_cta !== '' ) ? $this->broes_cta : 'Submit';
+		$this->option_fields = $option_fields;
+		$this->option_fields->broes_cta = ( $this->option_fields->broes_cta !== '' ) ? $this->option_fields->broes_cta : 'Submit';
 
-		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $this->broes_api_key ) );
+		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $this->option_fields->broes_api_key ) );
 		if ( $api->connection ) {
 			$this->fields = $api->get_fields();
 			$this->input_objects = $this->get_input_objects();
@@ -150,8 +147,8 @@ class Bronto_Email_Signup_Public {
  			'ajax_url' => admin_url( 'admin-ajax.php' ),
  			'nonce' => wp_create_nonce( 'broes_nonce' ),
 			'expected_inputs' => $this->expected_inputs,
-			'success_message' => $this->broes_success_message,
-			'registered_message' => $this->broes_registered_message
+			'success_message' => $this->option_fields->broes_success_message,
+			'registered_message' => $this->option_fields->broes_registered_message
  		);
 		wp_enqueue_script( 'jquery-validate', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->bronto_email_signup, plugin_dir_url( __FILE__ ) . 'dist/js/bronto-email-signup.min.js', array( 'jquery' ), $this->version, false );
@@ -161,8 +158,8 @@ class Bronto_Email_Signup_Public {
 
 	private function get_input_objects() {
 		$input_fields = array();
-		if ( !is_array( $this->broes_fields ) ) return $input_fields;
-		foreach($this->broes_fields as $key => $broes_field) {
+		if ( !is_array( $this->option_fields->broes_fields ) ) return $input_fields;
+		foreach($this->option_fields->broes_fields as $key => $broes_field) {
 		  $field_key = array_search(
 		    $broes_field['id'],
 		    array_map(function($e) {
@@ -179,7 +176,7 @@ class Bronto_Email_Signup_Public {
 		if ( !is_array( $this->input_objects ) ) {
 			return $input_html;
 		}
-		foreach($this->broes_fields as $key => $broes_field) {
+		foreach($this->option_fields->broes_fields as $key => $broes_field) {
 		  $field_key = array_search(
 		    $broes_field['id'],
 		    array_map(function($e) {
@@ -196,12 +193,12 @@ class Bronto_Email_Signup_Public {
 			$field->id,
 			array_map(function($e) {
 				return $e['id'];
-			}, $this->broes_fields)
+			}, $this->option_fields->broes_fields)
 		);
-		$required_label = ( array_key_exists( 'required', $this->broes_fields[$field_key] ) ) ? '<span class="required">*</span>' : '';
-		$required_input = ( array_key_exists( 'required', $this->broes_fields[$field_key] ) ) ? ' aria-required="true"' : '';
-		$hidden = ( array_key_exists( 'hidden', $this->broes_fields[$field_key] ) ) ? ' hidden' : '';
-		$value = ( array_key_exists( 'value', $this->broes_fields[$field_key] ) ) ? ' value="' . $this->broes_fields[$field_key]['value'] . '"' : '';
+		$required_label = ( array_key_exists( 'required', $this->option_fields->broes_fields[$field_key] ) ) ? '<span class="required">*</span>' : '';
+		$required_input = ( array_key_exists( 'required', $this->option_fields->broes_fields[$field_key] ) ) ? ' aria-required="true"' : '';
+		$hidden = ( array_key_exists( 'hidden', $this->option_fields->broes_fields[$field_key] ) ) ? ' hidden' : '';
+		$value = ( array_key_exists( 'value', $this->option_fields->broes_fields[$field_key] ) ) ? ' value="' . $this->option_fields->broes_fields[$field_key]['value'] . '"' : '';
 	  switch($field->type) {
 	    case 'select' :
 				$html = '<div role="group" class="form-group' . $hidden . '">';
@@ -288,7 +285,7 @@ class Bronto_Email_Signup_Public {
 
 	private function get_expected_inputs() {
 		$inputs = array();
-		foreach($this->broes_fields as $key => $broes_field) {
+		foreach($this->option_fields->broes_fields as $key => $broes_field) {
 		  $field_key = array_search(
 		    $broes_field['id'],
 		    array_map(function($e) {
@@ -297,13 +294,13 @@ class Bronto_Email_Signup_Public {
 		  );
 		  $inputs[] = $this->fields[$field_key]->id;
 		}
-		// foreach ( $this->broes_fields as $field ) {
+		// foreach ( $this->option_fields->broes_fields as $field ) {
 		//   $field = array_values($field);
 		// 	if ( !empty( $field[0] ) ) {
 		// 		$inputs[] = $field[0]->id;
 		// 	}
 		// }
-		$inputs[] = $this->broes_contact;
+		$inputs[] = $this->option_fields->broes_contact;
 		return $inputs;
 	}
 
