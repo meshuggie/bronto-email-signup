@@ -294,12 +294,6 @@ class Bronto_Email_Signup_Public {
 		  );
 		  $inputs[] = $this->fields[$field_key]->id;
 		}
-		// foreach ( $this->option_fields->broes_fields as $field ) {
-		//   $field = array_values($field);
-		// 	if ( !empty( $field[0] ) ) {
-		// 		$inputs[] = $field[0]->id;
-		// 	}
-		// }
 		$inputs[] = $this->option_fields->broes_contact;
 		return $inputs;
 	}
