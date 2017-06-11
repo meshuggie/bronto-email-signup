@@ -65,13 +65,10 @@ class Bronto_Email_Signup_Admin {
 	public function __construct( $bronto_email_signup, $version, $option_fields ) {
 
 		$this->bronto_email_signup = $bronto_email_signup;
-		$this->option_fields = $option_fields;
-		foreach ($this->option_fields as $key => $value) {
-			$this->$key = get_option( $key );
-		}
 		$this->version = $version;
+		$this->option_fields = $option_fields;
 
-		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $this->broes_api_key ) );
+		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $this->option_fields->broes_api_key ) );
 		$this->api_initiated = $api->connection;
 		if ( $this->api_initiated ) {
 			$this->lists = $api->get_lists();
@@ -207,10 +204,10 @@ class Bronto_Email_Signup_Admin {
 			);
 		} else {
 			$connection_data = $this->get_expected_inputs($_POST);
-			$connection_data['api_key'] = $this->broes_api_key;
-			$connection_data['list_ids'] = $this->broes_list_ids;
-			$connection_data['webform_url'] = $this->broes_webform_url;
-			$connection_data['webform_secret'] = $this->broes_webform_secret;
+			$connection_data['api_key'] = $this->option_fields->broes_api_key;
+			$connection_data['list_ids'] = $this->option_fields->broes_list_ids;
+			$connection_data['webform_url'] = $this->option_fields->broes_webform_url;
+			$connection_data['webform_secret'] = $this->option_fields->broes_webform_secret;
 		}
 		$signup = new Bronto_Email_Signup_Api( $connection_data );
 
@@ -227,11 +224,11 @@ class Bronto_Email_Signup_Admin {
 				'content' => $data[$input]
 			);
 		}
-		unset($fields[$this->broes_contact]);
+		unset($fields[$this->option_fields->broes_contact]);
 		$fields = array_values($fields);
 		return array(
 			'fields' => $fields,
-			$this->broes_contact => $data[$this->broes_contact]
+			$this->option_fields->broes_contact => $data[$this->option_fields->broes_contact]
 		);
 	}
 
