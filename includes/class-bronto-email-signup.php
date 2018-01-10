@@ -240,7 +240,6 @@ class Bronto_Email_Signup {
 			'broes_contact' => '',
 			'broes_list_ids' => '',
 			'broes_fields' => '',
-			'broes_required_fields' => '',
 			'broes_cta' => '',
 			'broes_success_message' => '',
 			'broes_registered_message' => ''
