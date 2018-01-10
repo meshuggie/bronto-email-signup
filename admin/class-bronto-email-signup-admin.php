@@ -203,7 +203,7 @@ class Bronto_Email_Signup_Admin {
 				'email' => $_POST['broes_test_email']
 			);
 		} else {
-			$connection_data = $this->get_expected_inputs($_POST);
+			$connection_data = $this->setup_post_data($_POST);
 			$connection_data['api_key'] = $this->option_fields->broes_api_key;
 			$connection_data['list_ids'] = $this->option_fields->broes_list_ids;
 			$connection_data['webform_url'] = $this->option_fields->broes_webform_url;
@@ -216,7 +216,7 @@ class Bronto_Email_Signup_Admin {
 
 	}
 
-	private function get_expected_inputs($data) {
+	private function setup_post_data($data) {
 		$fields = array();
 		foreach($data['expected_inputs'] as $key => $input) {
 			$fields[$input] = array(
