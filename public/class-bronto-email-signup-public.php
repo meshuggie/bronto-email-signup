@@ -176,6 +176,9 @@ class Bronto_Email_Signup_Public {
 		if ( !is_array( $this->input_objects ) ) {
 			return $input_html;
 		}
+		if ( !is_array( $this->option_fields->broes_fields ) ) {
+			return $input_html;
+		}
 		foreach($this->option_fields->broes_fields as $key => $broes_field) {
 		  $field_key = array_search(
 		    $broes_field['id'],

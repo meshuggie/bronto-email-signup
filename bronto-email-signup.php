@@ -25,7 +25,7 @@ along with Bronto Email Signup. If not, see http://www.gnu.org/licenses/gpl-2.0.
  * Plugin Name:       Bronto Email Signup
  * Plugin URI:        https://github.com/meshuggie/bronto-email-signup/
  * Description:       Creates a form for Bronto email signups, via a shortcode or widget. Allows you to add contacts to 1 or more Bronto Lists.
- * Version:           0.1.2
+ * Version:           0.1.4
  * Author:            Joshua Harris
  * Author URI:        https://github.com/meshuggie/bronto-email-signup/
  * License:           GPL-2.0+
