@@ -68,9 +68,32 @@ class Bronto_Email_Signup_Admin {
 		$this->version = $version;
 		$this->option_fields = $option_fields;
 
-		$api = new Bronto_Email_Signup_Api( array( 'api_key' => $this->option_fields->broes_api_key ) );
-		$this->api_initiated = $api->connection;
+		// $api = new Bronto_Email_Signup_Api( array( 'api_key' => $this->option_fields->broes_api_key ) );
+    $client = new SoapClient(
+      'https://api.bronto.com/v4?wsdl',
+      array(
+        'trace' => 1,
+        'features' => SOAP_SINGLE_ELEMENT_ARRAYS
+      )
+    );
+
+    try {
+      $sessionId = $client->login(
+        array('apiToken' => $this->option_fields->broes_api_key)
+      )->return;
+      $session_header = new SoapHeader(
+        "http://api.bronto.com/v4",
+        'sessionHeader',
+        array( 'sessionId' => $sessionId )
+      );
+      $client->__setSoapHeaders( array( $session_header ) );
+      $this->api_initiated = true;
+    } catch (Exception $e) {
+      $this->api_initiated = false;
+    }
+
 		if ( $this->api_initiated ) {
+			$api = new Bronto_Email_Signup_Api($client);
 			$this->lists = $api->get_lists();
 			$this->fields = $api->get_fields();
 		}

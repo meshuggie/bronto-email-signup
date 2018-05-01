@@ -14,5 +14,8 @@
   },
   "config": {
     "bin-dir": "bin"
+  },
+  "require-dev": {
+    "mockery/mockery": "^1.0"
   }
 }

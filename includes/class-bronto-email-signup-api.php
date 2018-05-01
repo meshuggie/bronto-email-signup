@@ -1,36 +1,12 @@
 <?php
 class Bronto_Email_Signup_Api {
-  public $connection,
-    $last_response;
+  public $connection;
   protected $client,
     $webform_url,
     $connection_data;
 
-  public function __construct( $connection_data = null ) {
-    $this->client = new SoapClient(
-      'https://api.bronto.com/v4?wsdl',
-      array(
-        'trace' => 1,
-        'features' => SOAP_SINGLE_ELEMENT_ARRAYS
-      )
-    );
-
-    try {
-      $sessionId = $this->client->login(
-        array('apiToken' => $connection_data['api_key'])
-      )->return;
-      $session_header = new SoapHeader(
-        "http://api.bronto.com/v4",
-        'sessionHeader',
-        array( 'sessionId' => $sessionId )
-      );
-      $this->client->__setSoapHeaders( array( $session_header ) );
-      $this->connection = true;
-    } catch (Exception $e) {
-      $this->connection = false;
-    }
-
-    $this->last_response = $this->client->__getLastResponse();
+  public function __construct( $client, $connection_data = null ) {
+    $this->client = $client;
     $this->connection_data = $connection_data;
 	}
 
@@ -85,7 +61,9 @@ class Bronto_Email_Signup_Api {
     } catch (Exception $e) {
       return array(
         'result' => 'exception',
-        'message' => $e
+        'message' => $e->getMessage(),
+        'trace' => $e->getTrace(),
+        'file' => $e->getFile() . ':' . $e->getLine()
       );
     }
   }

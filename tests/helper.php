@@ -39,6 +39,33 @@ class Test_Helper {
     return $_POST;
   }
 
+  public function email_lists($xml = false) {
+    $arr = [];
+    $max = $this->faker->numberBetween(1, 5);
+    $lists = new SimpleXMLElement($this->getListsXml());
+    for ($i=0; $i < $max; $i++) {
+      $list = new stdClass;
+      $list->id = $this->faker->unique()->randomDigit;
+      $list->name = $this->faker->name;
+      $list->label = $this->faker->name;
+      $list->activeCount = $this->faker->numberBetween(1, 10);
+      $list->status = 'active';
+      $list->visibility = 'public';
+      $arr[] = $list;
+      $xmlObj = $lists->addChild('list');
+      $xmlObj->addChild('id', $list->id);
+      $xmlObj->addChild('name', $list->name);
+      $xmlObj->addChild('label', $list->label);
+      $xmlObj->addChild('activeCount', $list->activeCount);
+      $xmlObj->addChild('status', 'active');
+      $xmlObj->addChild('visibility', 'public');
+    }
+    $return = new stdClass;
+    $return->xml = $lists;
+    $return->obj = $arr;
+    return $return;
+  }
+
   private function input_types($sort_number) {
     return [
       'id' => $this->faker->md5,
@@ -62,5 +89,12 @@ class Test_Helper {
       'webform_secret' => $this->faker->md5
     ];
   }
+
+	private function getListsXml() {
+			return <<<XML
+<lists>
+</lists>
+XML;
+	}
 
 }
